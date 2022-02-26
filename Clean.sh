@@ -1,4 +1,3 @@
-rm **/*.o
-rm **/*.s
-rm src/**/*.o
-rm src/**/*.s
+./Bifton build src:Bifton.cpp
+./Bifton --Assembly clean src:Bifton.cpp
+./Bifton clean src:Bifton.cpp

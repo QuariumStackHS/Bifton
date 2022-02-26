@@ -1,14 +1,14 @@
 #ifndef BIFTONCXX_HPP
 #define BIFTONCXX_HPP
 
-#include <iostream>
-#include <map>
-#include <string>
-#include <vector>
 #include <filesystem>
 #include <fstream>
 #include <gmpxx.h>
+#include <iostream>
+#include <map>
 #include <sstream>
+#include <string>
+#include <vector>
 #define RESET "\033[0m"
 #define BLACK "\033[30m"              /* Black */
 #define RED "\033[31m"                /* Red */
@@ -36,7 +36,7 @@
 #define CYAN "\033[36m"
 using namespace std;
 using namespace filesystem;
-
+string FMP(string g);
 inline void replace(string &input, const string &from, const string &to)
 {
     auto pos = 0;
@@ -57,9 +57,9 @@ inline string get_c_name(string name)
 }
 inline string get_o_name(string name)
 {
-    string ret=name;
-    replace(ret,".cpp",".o");
-    replace(ret,".c",".o");
+    string ret = name;
+    replace(ret, ".cpp", ".o");
+    replace(ret, ".c", ".o");
     return ret;
 }
 inline string get_E_name(string name)
@@ -76,22 +76,24 @@ inline string get_S_name(string name)
     replace(ret, ".c", ".s");
     return ret;
 }
-class Deterministix{
-    protected:
-        //s1=#include "includename" s2=added switch for linkage
-        map<string,string>I2SL;//Include2linkageswitchToAdd
-        map<string,bool>I2SLB;//Include2IfOrNotIsPresent
-        map<string,bool>Treated;
-        map<string,string>C2SC;
-        map<string,bool>C2SB;
-    public:
-        vector<string>CodePath;
-        vector<string>objPath;
-        Deterministix();
-        void Register(string,string);
-        void print();
-        string get_ALL_LinkageSwitch(char Separator);
-void Bifton(string,string);
+class Deterministix
+{
+protected:
+    // s1=#include "includename" s2=added switch for linkage
+    map<string, string> I2SL; // Include2linkageswitchToAdd
+    map<string, bool> I2SLB;  // Include2IfOrNotIsPresent
+    map<string, bool> Treated;
+    map<string, string> C2SC;
+    map<string, bool> C2SB;
 
+public:
+    vector<string> CodePath;
+    vector<string> objPath;
+    Deterministix();
+    void Register(string, string);
+    void print();
+    string get_ALL_LinkageSwitch(char Separator);
+    void Bifton(string, string, bool Print = 0);
 };
+string GetFName(string path);
 #endif

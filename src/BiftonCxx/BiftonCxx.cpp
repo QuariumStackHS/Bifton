@@ -1,13 +1,10 @@
 #include "BiftonCxx.hpp"
 
+#include "Data/Registry.hpp"
 string FMP(string g) { return string("<") + g + string(">"); }
 Deterministix::Deterministix()
 {
-    // you can see what it kinof mean
-
-    this->Register(FMP("thread"), "-lpthread");
-    this->Register(FMP("gmpxx.h"), "-lgmp");
-    this->Register(FMP("gmp.h"), "-lgmp");
+    RegisterDet(this);
 }
 void splitString(vector<string> &FP, string str, string delimiter = " ")
 {
@@ -20,6 +17,13 @@ void splitString(vector<string> &FP, string str, string delimiter = " ")
         end = str.find(delimiter, start);
     }
     FP.push_back(str.substr(start, end - start));
+}
+
+string GetFName(string path)
+{
+    vector<string> Y;
+    splitString(Y, path, "/");
+    return Y.at(Y.size() - 1);
 }
 struct FilePath
 {
@@ -70,7 +74,7 @@ bool Compare(char *I, char *J)
 
     return ret;
 }*/
-void FindIncludes(stringstream &FileContain, Deterministix *This, string Filename)
+void FindIncludes(stringstream &FileContain, Deterministix *This, string Filename, bool print = 0)
 {
 
     string C = FileContain.str();
@@ -79,7 +83,7 @@ void FindIncludes(stringstream &FileContain, Deterministix *This, string Filenam
     int Count = 0;
     bool Skip = 0;
     bool OneLineSkip = 0;
-
+    int IncludesINT = 0;
     // if()
     for (int i = 0; i < C.size(); i++)
     {
@@ -88,6 +92,7 @@ void FindIncludes(stringstream &FileContain, Deterministix *This, string Filenam
         if ((C[i] == '/') && (C[i + 1] == '/'))
             OneLineSkip = 1;
         OneLineSkip = ((C[i] == '\n') && OneLineSkip) ? 0 : OneLineSkip;
+
         if (!Skip && !OneLineSkip)
         {
             if (Tofind[Count] == C[i])
@@ -96,9 +101,12 @@ void FindIncludes(stringstream &FileContain, Deterministix *This, string Filenam
             }
             else if (Count >= Tofind.size())
             {
-                cout << ".";
+                if (print)
+                    IncludesINT++;
                 if ((C[i + 1] == '"') || (C[i + 2] == '"'))
                     Includes.push_back(i);
+                else
+                    IncludesINT--;
                 Count = 0;
             }
             else
@@ -109,7 +117,12 @@ void FindIncludes(stringstream &FileContain, Deterministix *This, string Filenam
     bool init = 0;
     string TempsStr = "";
     struct FilePath *Tempi;
-    cout << GREEN " Done √" << endl;
+    for (int i = 0; i < IncludesINT; i++)
+    {
+        cout << ".";
+    }
+    if (print)
+        cout << GREEN " Done √" << endl;
     for (int i = 0; i < Includes.size(); i++)
     {
         init = 0;
@@ -124,10 +137,10 @@ void FindIncludes(stringstream &FileContain, Deterministix *This, string Filenam
                 if (init)
                 {
                     Tempi = SplitPath_FileNAme(TempsStr);
-                    This->Bifton(Tempi->Directory, Tempi->FileName);
+                    This->Bifton(Tempi->Directory, Tempi->FileName, print);
                     // cout<<current_path()<<" <> "<<Tempi->Directory<<" -> "<<exists(get_c_name(Tempi->FileName))<<" "<<get_c_name(Tempi->FileName)<<endl;
                     if (exists(Tempi->Directory + get_c_name(Tempi->FileName)))
-                        This->Bifton(Tempi->Directory, get_c_name(Tempi->FileName));
+                        This->Bifton(Tempi->Directory, get_c_name(Tempi->FileName), print);
                     Counta = C.size();
                 }
                 else
@@ -158,7 +171,7 @@ bool AlreadyIn(Deterministix *This, string P)
 void Deterministix::print()
 {
     for (int i = 0; i < this->CodePath.size(); i++)
-        cout << YELLOW << "Used File: " << BOLDMAGENTA << CodePath[i] << RESET << endl;
+        cout << YELLOW << "Used File: " << BOLDMAGENTA << GetFName(CodePath[i]) << RESET << endl;
     for (map<string, string>::iterator it = I2SL.begin(); it != I2SL.end(); it.operator++())
         if (this->I2SLB[it->first])
             cout << "\t-> " << BOLDMAGENTA << it->second << GREEN << "(" << BOLDCYAN << it->first << GREEN << ")" << RESET << endl;
@@ -172,7 +185,7 @@ bool Exist(Deterministix *Al, string Out)
     }
     return 0;
 }
-void Deterministix::Bifton(string Path, string Filename)
+void Deterministix::Bifton(string Path, string Filename, bool Print)
 {
     if (strcmp(Path.c_str(), "") == 0)
         Path = "./";
@@ -187,16 +200,17 @@ void Deterministix::Bifton(string Path, string Filename)
             Treated[Filename] = 1;
             ifstream File(Filename);
             ss << File.rdbuf();
-            cout << BOLDBLUE << "Analysing -> " << CYAN << Filename;
-            FindIncludes(ss, this, Filename);
+            if (Print)
+                cout << BOLDBLUE << "Analysing -> " << CYAN << Filename;
+            FindIncludes(ss, this, Filename, Print);
 
             if (!AlreadyIn(this, Cp + '/' + get_c_name(Filename)))
             {
                 string FP = get_c_name(Filename);
                 // cout << FP << endl;
                 //  cout<<FP<<(get_o_name(Filename)[get_o_name(Filename).size() - 1] == 'o')<<get_o_name(Filename)<<endl;
-                CodePath.push_back(Cp + '/' + FP);
-                string oname = get_o_name(FP);
+                if (exists(Cp + '/' + get_c_name(FP)))
+                    CodePath.push_back(Cp + '/' + FP);
                 if (!Exist(this, get_o_name(FP)))
                     objPath.push_back(Cp + '/' + get_o_name(FP));
             }

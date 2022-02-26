@@ -50,22 +50,24 @@ void Bifton_Clean(SimpleExecuter *SE)
         string CompilerStandard;
 #define CurrentFile Deter->CodePath[i]
 #define OBJCurrent (SE->Switchs["--Assembly"]) ? get_S_name(CurrentFile) : get_o_name(CurrentFile)
-int OK=0;
-string por;
+        int OK = 0;
+        string por;
         for (int i = 0; i < Deter->CodePath.size(); i++)
         {
-            if(exists(OBJCurrent)){
+            if (exists(OBJCurrent))
+            {
                 remove(OBJCurrent);
-                por=OBJCurrent;
-                cout<<BOLDBLUE<<"Removed -> "<<YELLOW<<por<<RESET<<endl;
+                por = OBJCurrent;
+                cout << BOLDBLUE << "Removed -> " << YELLOW << GetFName(por) << RESET << endl;
             }
         }
     }
     // Deter->Bifton(Path, file);
 }
-inline bool ends_with(std::string const & value, std::string const & ending)
+inline bool ends_with(std::string const &value, std::string const &ending)
 {
-    if (ending.size() > value.size()) return false;
+    if (ending.size() > value.size())
+        return false;
     return std::equal(ending.rbegin(), ending.rend(), value.rbegin());
 }
 void Bifton_Run(SimpleExecuter *SE)
@@ -84,31 +86,32 @@ void Bifton_Run(SimpleExecuter *SE)
     {
 
         Deterministix *Deter = new Deterministix;
-        Deter->Bifton(Path, file);
+        Deter->Bifton(Path, file, 1);
         string Command;
         string ObjsPathName = "";
         string outputFile;
         int Compiler;
         string CompilerStandard;
 #define CurrentFile Deter->CodePath[i]
-int OK=0;
+        int OK = 0;
         for (int i = 0; i < Deter->CodePath.size(); i++)
         {
-                Compiler = (CurrentFile[CurrentFile.size() - 1] == 'c') ? GCC : GXX;
-                CompilerStandard = (Compiler == 1) ? "-std=c++17" : "-std=c17";
-                outputFile = (SE->Switchs["--Assembly"]) ? get_S_name(CurrentFile) : get_o_name(CurrentFile);
-                Command = getCompiler(Compiler) + " " + Type + " -o" + outputFile + " " + CurrentFile + " " + CompilerStandard;
-                cout << BOLDBLUE "~> " << YELLOW << Command << RESET<< endl;
+            Compiler = (CurrentFile[CurrentFile.size() - 1] == 'c') ? GCC : GXX;
+            CompilerStandard = (Compiler == 1) ? "-std=c++17" : "-std=c17";
+            outputFile = (SE->Switchs["--Assembly"]) ? get_S_name(CurrentFile) : get_o_name(CurrentFile);
+            Command = getCompiler(Compiler) + " " + Type + " -o" + outputFile + " " + CurrentFile + " " + CompilerStandard;
+            cout << BOLDBLUE "~> " << YELLOW << Command << RESET << endl;
 
-
-            OK=system(Command.c_str());
-            if(0==OK){
+            OK = system(Command.c_str());
+            if (0 == OK)
+            {
                 if (i < Deter->objPath.size())
                     ObjsPathName.append(outputFile).append(" ");
             }
-            else{
+            else
+            {
 
-                cout<<BOLDRED<<"Error Exiting Compiler reported: "<<OK/256<<endl;
+                cout << BOLDRED << "Error Exiting Compiler reported: " << OK / 256 << endl;
                 exit(OK);
             }
         }
@@ -122,7 +125,7 @@ int OK=0;
 
 int main(int argc, char **argv)
 {
-    
+
     SimpleExecuter *Session = new SimpleExecuter;
     Session->Register("build", &Bifton_Run);
     Session->Register("clean", &Bifton_Clean);
