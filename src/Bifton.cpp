@@ -1,4 +1,6 @@
 #include "SimpleExecuter.hpp"
+#include <regex.h>
+#include <thread>
 // argv[0] run PATH:MainFile
 #define GCC 0
 #define GXX 1
@@ -36,6 +38,7 @@ void Bifton_Clean(SimpleExecuter *SE)
     Deterministix *Deter = new Deterministix;
     SplitPATHSFromCommand(&Path, &file, &eArg);
     Deter->Bifton(Path, file);
+
     if (strcmp(file.c_str(), "") == 0)
     {
         cout << YELLOW << "Bad Syntaxe: " << BOLDRED << Path << RESET << BLUE << " -> [try 'Path:MainFile' as syntaxe]" << RESET << endl;
@@ -58,7 +61,7 @@ void Bifton_Clean(SimpleExecuter *SE)
             {
                 remove(OBJCurrent);
                 por = OBJCurrent;
-                cout << BOLDBLUE << "Removed -> " << YELLOW << GetFName(por) << RESET << endl;
+                cout << getCurrentTime() << BOLDBLUE << " Removed -> " << YELLOW << GetFName(por) << RESET << endl;
             }
         }
     }
@@ -77,7 +80,16 @@ void Bifton_Run(SimpleExecuter *SE)
     string file = "";
     SplitPATHSFromCommand(&Path, &file, &eArg);
     string Type = (SE->Switchs["--Assembly"]) ? "-S" : "-c";
+    auto Run = [](string Command, int &OK)
+    {
+        OK = system(Command.c_str());
+        cout << getCurrentTime() << BOLDBLUE " ~> " << YELLOW << Command << RESET << endl;
+    };
 
+    // This thread is launched by using
+    // lamda expression as callable
+    vector<thread> CompilationThreads;
+    vector<int> ResultOfThreads;
     if (strcmp(file.c_str(), "") == 0)
     {
         cout << YELLOW << "Bad Syntaxe: " << BOLDRED << Path << RESET << BLUE << " -> [try 'Path:MainFile' as syntaxe]" << RESET << endl;
@@ -93,17 +105,16 @@ void Bifton_Run(SimpleExecuter *SE)
         int Compiler;
         string CompilerStandard;
 #define CurrentFile Deter->CodePath[i]
-        int OK = 0;
         for (int i = 0; i < Deter->CodePath.size(); i++)
         {
             Compiler = (CurrentFile[CurrentFile.size() - 1] == 'c') ? GCC : GXX;
             CompilerStandard = (Compiler == 1) ? "-std=c++17" : "-std=c17";
             outputFile = (SE->Switchs["--Assembly"]) ? get_S_name(CurrentFile) : get_o_name(CurrentFile);
             Command = getCompiler(Compiler) + " " + Type + " -o" + outputFile + " " + CurrentFile + " " + CompilerStandard;
-            cout << BOLDBLUE "~> " << YELLOW << Command << RESET << endl;
-
-            OK = system(Command.c_str());
-            if (0 == OK)
+            ResultOfThreads.push_back(int(0));
+            CompilationThreads.push_back(thread(Run, Command, ref(ResultOfThreads[i])));
+            CompilationThreads[i].join();
+            if (ResultOfThreads[i] == 0)
             {
                 if (i < Deter->objPath.size())
                     ObjsPathName.append(outputFile).append(" ");
@@ -111,12 +122,14 @@ void Bifton_Run(SimpleExecuter *SE)
             else
             {
 
-                cout << BOLDRED << "Error Exiting Compiler reported: " << OK / 256 << endl;
-                exit(OK);
+                cout << getCurrentTime() << BOLDRED << " Error Exiting Compiler reported: " << ResultOfThreads[i] / 256 << endl;
+                exit(ResultOfThreads[i]);
             }
         }
         string LinkCommand = "gcc -lstdc++ " + ObjsPathName + " -O3 " + Deter->get_ALL_LinkageSwitch(' ') + " -o" + get_E_name(file);
-        cout << BOLDBLUE << "Final ~> " << YELLOW << LinkCommand << RESET << endl;
+        cout << getCurrentTime() << BOLDBLUE << " Final ~> " << YELLOW << LinkCommand << RESET << endl
+             << BOLDMAGENTA << Deter->LineAprox << RESET << " Line of Code Analysed " << endl;
+
         system(LinkCommand.c_str());
         Deter->print();
         delete Deter;
@@ -131,5 +144,6 @@ int main(int argc, char **argv)
     Session->Register("clean", &Bifton_Clean);
     Session->Pass(argc, argv);
     Session->Run();
+
     return 0;
 }

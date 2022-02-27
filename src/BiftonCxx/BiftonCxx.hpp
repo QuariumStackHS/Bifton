@@ -5,10 +5,12 @@
 #include <fstream>
 #include <gmpxx.h>
 #include <iostream>
+#include <ctime>
 #include <map>
 #include <sstream>
 #include <string>
 #include <vector>
+
 #define RESET "\033[0m"
 #define BLACK "\033[30m"              /* Black */
 #define RED "\033[31m"                /* Red */
@@ -55,6 +57,7 @@ inline string get_c_name(string name)
     replace(ret, ".h", ".c");
     return ret;
 }
+string getCurrentTime();
 inline string get_o_name(string name)
 {
     string ret = name;
@@ -87,6 +90,7 @@ protected:
     map<string, bool> C2SB;
 
 public:
+int LineAprox=0;
     vector<string> CodePath;
     vector<string> objPath;
     Deterministix();

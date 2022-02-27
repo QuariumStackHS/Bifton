@@ -1,10 +1,18 @@
 #include "BiftonCxx.hpp"
-
 #include "Data/Registry.hpp"
 string FMP(string g) { return string("<") + g + string(">"); }
 Deterministix::Deterministix()
 {
     RegisterDet(this);
+}
+string getCurrentTime(){
+    time_t t = time(0);   // get time now
+    tm* now = localtime(&t);
+    stringstream ss;
+    ss<<RESET << (now->tm_hour) << ':' 
+         << (now->tm_min) << ':'
+         <<  now->tm_sec;
+        return ss.str();
 }
 void splitString(vector<string> &FP, string str, string delimiter = " ")
 {
@@ -80,17 +88,24 @@ void FindIncludes(stringstream &FileContain, Deterministix *This, string Filenam
     string C = FileContain.str();
     string Tofind = "#include";
     vector<int> Includes;
+    vector<int> Color;
+
     int Count = 0;
     bool Skip = 0;
     bool OneLineSkip = 0;
     int IncludesINT = 0;
+    int Uninclude = 0;
+
     // if()
     for (int i = 0; i < C.size(); i++)
     {
+
         if ((C[i] == '"') || ((C[i] == '/') && (C[i + 1] == '*')) || ((C[i] == '*') && (C[i + 1] == '/')))
             Skip = !Skip;
         if ((C[i] == '/') && (C[i + 1] == '/'))
             OneLineSkip = 1;
+        if (C[i] == '\n')
+            This->LineAprox++;
         OneLineSkip = ((C[i] == '\n') && OneLineSkip) ? 0 : OneLineSkip;
 
         if (!Skip && !OneLineSkip)
@@ -104,9 +119,16 @@ void FindIncludes(stringstream &FileContain, Deterministix *This, string Filenam
                 if (print)
                     IncludesINT++;
                 if ((C[i + 1] == '"') || (C[i + 2] == '"'))
+                {
+                    Color.push_back(1);
                     Includes.push_back(i);
+                }
+                else if ((C[i + 1] == '<') || (C[i + 2] == '<'))
+                    Color.push_back(0);
                 else
-                    IncludesINT--;
+                {
+                    Color.push_back(2);
+                }
                 Count = 0;
             }
             else
@@ -117,12 +139,26 @@ void FindIncludes(stringstream &FileContain, Deterministix *This, string Filenam
     bool init = 0;
     string TempsStr = "";
     struct FilePath *Tempi;
-    for (int i = 0; i < IncludesINT; i++)
-    {
-        cout << ".";
-    }
     if (print)
-        cout << GREEN " Done √" << endl;
+    {
+        for (int i = 0; i < Color.size(); i++)
+        {
+            switch (Color[i])
+            {
+            case 0:
+                cout << YELLOW << ".";
+                break;
+            case 1:
+                cout << BOLDMAGENTA << "?" << RESET;
+                break;
+            case 2:
+                cout << RED << "!";
+                break;
+            }
+        }
+
+        cout << RESET << GREEN " Done √" << endl;
+    }
     for (int i = 0; i < Includes.size(); i++)
     {
         init = 0;
@@ -170,8 +206,7 @@ bool AlreadyIn(Deterministix *This, string P)
 }
 void Deterministix::print()
 {
-    for (int i = 0; i < this->CodePath.size(); i++)
-        cout << YELLOW << "Used File: " << BOLDMAGENTA << GetFName(CodePath[i]) << RESET << endl;
+
     for (map<string, string>::iterator it = I2SL.begin(); it != I2SL.end(); it.operator++())
         if (this->I2SLB[it->first])
             cout << "\t-> " << BOLDMAGENTA << it->second << GREEN << "(" << BOLDCYAN << it->first << GREEN << ")" << RESET << endl;
@@ -201,7 +236,7 @@ void Deterministix::Bifton(string Path, string Filename, bool Print)
             ifstream File(Filename);
             ss << File.rdbuf();
             if (Print)
-                cout << BOLDBLUE << "Analysing -> " << CYAN << Filename;
+                cout<<getCurrentTime()<< BOLDBLUE << " Analysing -> " << CYAN << Filename;
             FindIncludes(ss, this, Filename, Print);
 
             if (!AlreadyIn(this, Cp + '/' + get_c_name(Filename)))
@@ -222,7 +257,7 @@ void Deterministix::Bifton(string Path, string Filename, bool Print)
         }
         else if (!Treated[Filename])
         {
-            cout << BOLDCYAN << "Error File: '" << RESET << RED << Filename << BOLDCYAN << "' Doesn't Exist! in " << current_path() << RESET << endl;
+            cout <<getCurrentTime() <<BOLDCYAN<< " Error File: '" << RESET << RED << Filename << BOLDCYAN << "' Doesn't Exist! in " << current_path() << RESET << endl;
             exit(0);
         }
         current_path(EcPath);
@@ -230,7 +265,7 @@ void Deterministix::Bifton(string Path, string Filename, bool Print)
     else if (strcmp(Path.c_str(), "") != 0)
     {
 
-        cout << BOLDCYAN << "Error Path: '" << RESET << RED << Path << BOLDCYAN << "' Doesn't Exist!" << endl;
+        cout <<getCurrentTime()<< BOLDCYAN << " Error Path: '" << RESET << RED << Path << BOLDCYAN << "' Doesn't Exist!" << endl;
         exit(0);
     }
 }
