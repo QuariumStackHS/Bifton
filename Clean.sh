@@ -1,3 +1,1 @@
-./Bifton build src:Bifton.cpp
-./Bifton --Assembly clean src:Bifton.cpp
-./Bifton clean src:Bifton.cpp
+./Bifton build src:Bifton.cpp clean src:Bifton.cpp --Assembly clean src:Bifton.cpp

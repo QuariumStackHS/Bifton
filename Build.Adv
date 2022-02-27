@@ -1,0 +1,1 @@
+|Build|(|Main|(|Clean|(@V%>Bifton clean src:Bifton.cpp%$;)@V%>Bifton build src:Bifton.cpp%$@V%>Clean%=>;)  ;)

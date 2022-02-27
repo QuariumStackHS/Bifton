@@ -1,9 +1,11 @@
+#include "AdvancedReltt.hpp"
 #include "SimpleExecuter.hpp"
 #include <regex.h>
 #include <thread>
 // argv[0] run PATH:MainFile
 #define GCC 0
 #define GXX 1
+
 string getCompiler(int C)
 {
     switch (C)
@@ -73,23 +75,39 @@ inline bool ends_with(std::string const &value, std::string const &ending)
         return false;
     return std::equal(ending.rbegin(), ending.rend(), value.rbegin());
 }
-void Bifton_Run(SimpleExecuter *SE)
+Task(RunScript, SE)
+{
+    string eArg = SE->GetNextArg();
+    string Path = "";
+    string file = "";
+    SplitPATHSFromCommand(&Path, &file, &eArg);
+    if(Path.size()==0)Path="./";
+    if (exists(Path))
+    {
+        current_path(Path);
+        if (exists(file))
+        {
+            ifstream F(file);
+            stringstream ss;
+            ss << F.rdbuf();
+            string cancer=ss.str();
+            //cout<<cancer<<endl;
+            RFI *ADVInterpreter = new RFI(&cancer);
+            ADVInterpreter->INIT();
+            ADVInterpreter->Execute();
+        }
+        else
+        cout<<"File=0"<<endl;
+    }
+}
+Task(Bifton_Run, SE)
 {
     string eArg = SE->GetNextArg();
     string Path = "";
     string file = "";
     SplitPATHSFromCommand(&Path, &file, &eArg);
     string Type = (SE->Switchs["--Assembly"]) ? "-S" : "-c";
-    auto Run = [](string Command, int &OK)
-    {
-        OK = system(Command.c_str());
-        cout << getCurrentTime() << BOLDBLUE " ~> " << YELLOW << Command << RESET << endl;
-    };
 
-    // This thread is launched by using
-    // lamda expression as callable
-    vector<thread> CompilationThreads;
-    vector<int> ResultOfThreads;
     if (strcmp(file.c_str(), "") == 0)
     {
         cout << YELLOW << "Bad Syntaxe: " << BOLDRED << Path << RESET << BLUE << " -> [try 'Path:MainFile' as syntaxe]" << RESET << endl;
@@ -104,6 +122,7 @@ void Bifton_Run(SimpleExecuter *SE)
         string outputFile;
         int Compiler;
         string CompilerStandard;
+        int OK;
 #define CurrentFile Deter->CodePath[i]
         for (int i = 0; i < Deter->CodePath.size(); i++)
         {
@@ -111,10 +130,9 @@ void Bifton_Run(SimpleExecuter *SE)
             CompilerStandard = (Compiler == 1) ? "-std=c++17" : "-std=c17";
             outputFile = (SE->Switchs["--Assembly"]) ? get_S_name(CurrentFile) : get_o_name(CurrentFile);
             Command = getCompiler(Compiler) + " " + Type + " -o" + outputFile + " " + CurrentFile + " " + CompilerStandard;
-            ResultOfThreads.push_back(int(0));
-            CompilationThreads.push_back(thread(Run, Command, ref(ResultOfThreads[i])));
-            CompilationThreads[i].join();
-            if (ResultOfThreads[i] == 0)
+            OK = system(Command.c_str());
+            cout << getCurrentTime() << BOLDBLUE << " ~> " << YELLOW << Command << RESET << endl;
+            if (OK == 0)
             {
                 if (i < Deter->objPath.size())
                     ObjsPathName.append(outputFile).append(" ");
@@ -122,13 +140,13 @@ void Bifton_Run(SimpleExecuter *SE)
             else
             {
 
-                cout << getCurrentTime() << BOLDRED << " Error Exiting Compiler reported: " << ResultOfThreads[i] / 256 << endl;
-                exit(ResultOfThreads[i]);
+                cout << getCurrentTime() << BOLDRED << " Error Exiting Compiler reported: " << OK / 256 << endl;
+                exit(OK);
             }
         }
         string LinkCommand = "gcc -lstdc++ " + ObjsPathName + " -O3 " + Deter->get_ALL_LinkageSwitch(' ') + " -o" + get_E_name(file);
-        cout << getCurrentTime() << BOLDBLUE << " Final ~> " << YELLOW << LinkCommand << RESET << endl
-             << BOLDMAGENTA << Deter->LineAprox << RESET << " Line of Code Analysed " << endl;
+        cout << getCurrentTime() << BOLDMAGENTA << " ~> " << YELLOW << LinkCommand << RESET << endl
+             << BOLDMAGENTA << "\t" << Deter->LineAprox << RESET << " Line of Code Analysed " << endl;
 
         system(LinkCommand.c_str());
         Deter->print();
@@ -138,9 +156,12 @@ void Bifton_Run(SimpleExecuter *SE)
 
 int main(int argc, char **argv)
 {
-
+    string CPPStandardVersion;
+    Get_Version(CPPStandardVersion);
+    cout << "Bifton on " << getOsName() << ": Build done using " << CPPStandardVersion << "\n";
     SimpleExecuter *Session = new SimpleExecuter;
     Session->Register("build", &Bifton_Run);
+    Session->Register("adv", &RunScript);
     Session->Register("clean", &Bifton_Clean);
     Session->Pass(argc, argv);
     Session->Run();

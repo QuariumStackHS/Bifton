@@ -1,4 +1,5 @@
 #include "BiftonCxx/BiftonCxx.hpp"
+
 class SimpleExecuter
 {
 protected:
@@ -16,3 +17,4 @@ public:
     void Register(string Sw, void (*PtrAddress)(SimpleExecuter *));
     void Run();
 };
+#define Task(FNCNAME,SimpleExecuterVarName)void FNCNAME(SimpleExecuter *SimpleExecuterVarName)

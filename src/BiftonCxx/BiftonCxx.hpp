@@ -2,8 +2,8 @@
 #define BIFTONCXX_HPP
 
 #include <filesystem>
+#include "Data/ComputerInfo.h"
 #include <fstream>
-#include <gmpxx.h>
 #include <iostream>
 #include <ctime>
 #include <map>
