@@ -99,5 +99,33 @@ int LineAprox=0;
     string get_ALL_LinkageSwitch(char Separator);
     void Bifton(string, string, bool Print = 0);
 };
+class Sizer{
+    public:
+        inline Sizer(char C, float Data){this->c=C,this->data=Data;}
+        char c;
+        float data;
+
+};
 string GetFName(string path);
+inline Sizer sizetoK(float bytes,int Base=1000) {
+    float kilobyte = Base;
+    float megabyte = kilobyte * Base;
+    float gigabyte = megabyte * Base;
+    float terabyte = gigabyte * Base;
+if ((bytes >= kilobyte) && (bytes < megabyte)) {
+        return Sizer('K',bytes / kilobyte);
+
+    } else if ((bytes >= megabyte) && (bytes < gigabyte)) {
+        return Sizer('M',bytes / megabyte);
+
+    } else if ((bytes >= gigabyte) && (bytes < terabyte)) {
+        return Sizer('G',bytes / gigabyte);
+
+    } else if (bytes >= terabyte) {
+        return Sizer('T',bytes / terabyte);
+
+    } else {
+        return Sizer('\0',bytes);
+    }
+}
 #endif

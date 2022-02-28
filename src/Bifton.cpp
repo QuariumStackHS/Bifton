@@ -1,7 +1,18 @@
-#include "AdvancedReltt.hpp"
+#include "ADV/AdvancedReltt.hpp"
+#include "SQLite3/sqlite3.h"
 #include "SimpleExecuter.hpp"
+#include <iomanip>
+void ShowBand(string Var)
+{
+    for (int i = 0; i < 20 - (Var.size() - 1); i++)
+        cout<< "═";
+    cout << Var;
+    for (int i = 0; i < 20 - (Var.size() - 1); i++)
+        cout <<  "═";
+    cout << endl;
+}
+
 #include <regex.h>
-#include <thread>
 // argv[0] run PATH:MainFile
 #define GCC 0
 #define GXX 1
@@ -81,7 +92,8 @@ Task(RunScript, SE)
     string Path = "";
     string file = "";
     SplitPATHSFromCommand(&Path, &file, &eArg);
-    if(Path.size()==0)Path="./";
+    if (Path.size() == 0)
+        Path = "./";
     if (exists(Path))
     {
         current_path(Path);
@@ -90,16 +102,22 @@ Task(RunScript, SE)
             ifstream F(file);
             stringstream ss;
             ss << F.rdbuf();
-            string cancer=ss.str();
-            //cout<<cancer<<endl;
+            string cancer = ss.str();
+            // cout<<cancer<<endl;
             RFI *ADVInterpreter = new RFI(&cancer);
             ADVInterpreter->INIT();
             ADVInterpreter->Execute();
         }
         else
-        cout<<"File=0"<<endl;
+            cout << "File=0" << endl;
     }
 }
+std::ifstream::pos_type filesize(const char *filename)
+{
+    std::ifstream in(filename, std::ifstream::ate | std::ifstream::binary);
+    return in.tellg();
+}
+
 Task(Bifton_Run, SE)
 {
     string eArg = SE->GetNextArg();
@@ -116,6 +134,7 @@ Task(Bifton_Run, SE)
     {
 
         Deterministix *Deter = new Deterministix;
+        ShowBand("Analysing");
         Deter->Bifton(Path, file, 1);
         string Command;
         string ObjsPathName = "";
@@ -123,13 +142,17 @@ Task(Bifton_Run, SE)
         int Compiler;
         string CompilerStandard;
         int OK;
+        vector<string> Commands;
 #define CurrentFile Deter->CodePath[i]
+        ShowBand("Compiling");
         for (int i = 0; i < Deter->CodePath.size(); i++)
         {
             Compiler = (CurrentFile[CurrentFile.size() - 1] == 'c') ? GCC : GXX;
             CompilerStandard = (Compiler == 1) ? "-std=c++17" : "-std=c17";
             outputFile = (SE->Switchs["--Assembly"]) ? get_S_name(CurrentFile) : get_o_name(CurrentFile);
             Command = getCompiler(Compiler) + " " + Type + " -o" + outputFile + " " + CurrentFile + " " + CompilerStandard;
+
+            Commands.push_back(Command);
             OK = system(Command.c_str());
             cout << getCurrentTime() << BOLDBLUE << " ~> " << YELLOW << Command << RESET << endl;
             if (OK == 0)
@@ -144,11 +167,27 @@ Task(Bifton_Run, SE)
                 exit(OK);
             }
         }
+        ShowBand("!Linking!");
         string LinkCommand = "gcc -lstdc++ " + ObjsPathName + " -O3 " + Deter->get_ALL_LinkageSwitch(' ') + " -o" + get_E_name(file);
-        cout << getCurrentTime() << BOLDMAGENTA << " ~> " << YELLOW << LinkCommand << RESET << endl
-             << BOLDMAGENTA << "\t" << Deter->LineAprox << RESET << " Line of Code Analysed " << endl;
-
+        Commands.push_back(LinkCommand);
+        Sizer S = sizetoK(Deter->LineAprox);
+        
+        cout << getCurrentTime() << setprecision(3) << BOLDMAGENTA << " ~> " << YELLOW << LinkCommand << RESET << endl;ShowBand("Task Done");
+        cout << "\t -> Line of Code Analysed :" << MAGENTA << S.data << BOLDMAGENTA << S.c << RESET << endl;
+        string FullFile = "";
+        for (int i = 0; i < Commands.size(); i++)
+            FullFile.append(Commands[i]).append("\n");
+        string CPATE = current_path();
+        replace(FullFile, CPATE, ".");
+        
         system(LinkCommand.c_str());
+        string SizeTypes = "TGMK";
+        long long RSize = filesize(get_E_name(file).c_str());
+        Sizer SE = sizetoK(RSize, 1024);
+        cout << "\t -> Executable Size : " << MAGENTA << SE.data << BOLDMAGENTA << SE.c << "B" << RESET << endl;
+        ofstream Cout(get_E_name(file) + "_Build.sh");
+        Cout << FullFile << endl;
+        Cout.close();
         Deter->print();
         delete Deter;
     }
@@ -158,7 +197,7 @@ int main(int argc, char **argv)
 {
     string CPPStandardVersion;
     Get_Version(CPPStandardVersion);
-    cout << "Bifton on " << getOsName() << ": Build done using " << CPPStandardVersion << "\n";
+    //cout << "Bifton on " << getOsName() << ": Build done using " << CPPStandardVersion << "\n";
     SimpleExecuter *Session = new SimpleExecuter;
     Session->Register("build", &Bifton_Run);
     Session->Register("adv", &RunScript);
