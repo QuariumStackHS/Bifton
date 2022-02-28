@@ -1,6 +1,6 @@
 |Main|(
-        #@V%>Build%                                  =>
-        @V%>Clean%                                  =>#
+        @V%>Build%                                  =>
+        @V%>Clean%                                  =>
         @V%>git add -A ; git commit -m "Commiting" ; git push%                             $
 ;)
 |Build|(
