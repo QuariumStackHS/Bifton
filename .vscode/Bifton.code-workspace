@@ -1,6 +1,7 @@
 {
 	"folders": [
 		{
+			"name": "Root",
 			"path": ".."
 		},
 		{
@@ -25,7 +26,8 @@
 			"**/Thumbs.db": true,
 			"src/":true,
 			".vscode/": true,
-			"Out": true
+			"Out": true,
+			"**/*.o":true
 		},
 		
 		"files.associations": {

@@ -128,7 +128,7 @@ Task(Bifton_Run, SE)
 
     if (strcmp(file.c_str(), "") == 0)
     {
-        cout << YELLOW << "Bad Syntaxe: " << BOLDRED << Path << RESET << BLUE << " -> [try 'Path:MainFile' as syntaxe]" << RESET << endl;
+        cout << YELLOW << "Bad Syntaxe: " << BOLDRED << Path << RESET << BLUE << " -> [try \"(--Assembly/--FileCreate) build  'Path:MainFile'\" as syntaxe]" << RESET << endl;
     }
     else
     {
@@ -183,14 +183,17 @@ Task(Bifton_Run, SE)
         system(LinkCommand.c_str());
         string SizeTypes = "TGMK";
         long long RSize = filesize(get_E_name(file).c_str());
-        Sizer SE = sizetoK(RSize, 1024);
-        cout << "\t -> Executable Size : " << MAGENTA << SE.data << BOLDMAGENTA << SE.c << "B" << RESET << endl;
+        Sizer Se = sizetoK(RSize, 1024);
+        cout << "\t -> Executable Size : " << MAGENTA << Se.data << BOLDMAGENTA << Se.c << "B" << RESET << endl;
+        if(SE->Switchs["--FileCreate"]){
         ofstream Cout(get_E_name(file) + "_Build.sh");
         Cout << FullFile << endl;
         Cout.close();
+        }
         Deter->print();
         delete Deter;
     }
+
 }
 
 int main(int argc, char **argv)
