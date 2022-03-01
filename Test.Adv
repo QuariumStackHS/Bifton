@@ -1,6 +1,6 @@
 |Main|(+[%>Loop% =>}_}];)
 |Loop|(
-%>stty raw%$
+%>stty raw%$%>Waiting For input : %[>.]
 @V+++*++++"
 [,'! }} "@V_.>{{@^
 #Look if user input is 13(ENTER)#
