@@ -1,6 +1,7 @@
 #include "AdvancedReltt.hpp"
 
 int main(int argc,char**argv){
+    int ret=1;
     if(argc==1){
         Help();
         cout<<"Usage : "<<argv[0]<<" File.Adv"<<endl;
@@ -14,6 +15,7 @@ int main(int argc,char**argv){
         RFI *R=new RFI(Code);
         R->INIT();
         R->Execute();
-
+        ret=R->DataSegm->This;
     }
+    return ret;
 }
