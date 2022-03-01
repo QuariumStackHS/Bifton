@@ -209,6 +209,5 @@ int main(int argc, char **argv)
     Session->Register("clean", &Bifton_Clean);
     Session->Pass(argc, argv);
     Session->Run();
-
     return 0;
 }
