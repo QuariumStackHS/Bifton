@@ -182,7 +182,7 @@ Task(Bifton_Run, SE)
             }
         }
         string LinkCommand;
-        Sizer S;
+        Sizer S=Size('.','.');
         if (Commands.size() >= 1)
         {
             ShowBand("!Linking!");
