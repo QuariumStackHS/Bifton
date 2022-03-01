@@ -178,12 +178,15 @@ Task(Bifton_Run, SE)
                 exit(OK);
             }
         }
-        ShowBand("!Linking!");
+        
+        if(Commands.size()>=1){
+            ShowBand("!Linking!");
         string LinkCommand = "gcc -lstdc++ " + ObjsPathName + " -O3 " + Deter->get_ALL_LinkageSwitch(' ') + " -o" + get_E_name(file);
         Commands.push_back(LinkCommand);
         Sizer S = sizetoK(Deter->LineAprox);
 
         cout << getCurrentTime() << setprecision(3) << BOLDMAGENTA << " ~> " << YELLOW << LinkCommand << RESET << endl;
+        }
         ShowBand("Task Done");
         cout << "\t -> Line of Code Analysed :" << MAGENTA << S.data << BOLDMAGENTA << S.c << RESET << endl;
         string FullFile = "";
