@@ -193,7 +193,7 @@ Task(Bifton_Run, SE)
             cout << getCurrentTime() << setprecision(3) << BOLDMAGENTA << " ~> " << YELLOW << LinkCommand << RESET << endl;
         }
         else{
-            cout<<getCurrentTime()<<BOLDGREEN" ~> Nothing To link"<<RESET;
+            cout<<getCurrentTime()<<BOLDGREEN" ~> Nothing To link"<<RESET<<endl;
         }
         ShowBand("Task Done");
         cout << "\t -> Line of Code Analysed :" << MAGENTA << S.data << BOLDMAGENTA << S.c << RESET << endl;
