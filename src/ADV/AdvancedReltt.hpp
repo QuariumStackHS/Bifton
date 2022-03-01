@@ -592,6 +592,7 @@ public:
                                 cout << sp << "[(" << head->This << " , " << head->Index << " )]," << sp;
                         head = head->RightCell;
                 }
+
                 
                 cout<<endl<<"=+=+=+=Math=+=+=+="<<endl;
                 sp = 0;

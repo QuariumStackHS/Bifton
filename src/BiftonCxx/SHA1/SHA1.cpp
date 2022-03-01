@@ -168,7 +168,7 @@ inline static void transform(uint32_t digest[], uint32_t block[BLOCK_INTS], uint
     R4(block, d, e, a, b, c, 13);
     R4(block, c, d, e, a, b, 14);
     R4(block, b, c, d, e, a, 15);
-
+ 
     /* Add the working vars back into digest[] */
     digest[0] += a;
     digest[1] += b;

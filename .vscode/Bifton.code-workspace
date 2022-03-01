@@ -22,7 +22,8 @@
 			"**/Thumbs.db": true,
 			"src/":true,
 			".vscode/": true,
-			"**/*.o":true
+			"**/*.o":true,
+			"**/*.SHA1":true
 		},
 		
 		"files.associations": {

@@ -57,6 +57,11 @@ inline string get_c_name(string name)
     replace(ret, ".h", ".c");
     return ret;
 }
+inline string get_H_name(string name){
+        string ret = name;
+    replace(ret, ".c", ".h");
+    return ret;
+}
 string getCurrentTime();
 inline string get_o_name(string name)
 {
@@ -97,8 +102,10 @@ int LineAprox=0;
     void Register(string, string);
     void print();
     string get_ALL_LinkageSwitch(char Separator);
-    void Bifton(string, string, bool Print = 0);
+    bool Bifton(string, string, bool Print = 0,bool SHA=1,bool ret=1);
 };
+
+
 class Sizer{
     public:
         inline Sizer(char C, float Data){this->c=C,this->data=Data;}

@@ -35,6 +35,7 @@ inline int MatchSHA1File(std::string StorageName,std::string Filename){
     StorageFile.close();
     if(strcmp(ss.str().c_str(),CurrentKey.c_str())==0){
         return 1;
+        
     }
     else{
         std::ofstream StorageFileOverwrite(StorageName);

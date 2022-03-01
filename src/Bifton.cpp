@@ -136,26 +136,36 @@ Task(Bifton_Run, SE)
 
         Deterministix *Deter = new Deterministix;
         ShowBand("Analysing");
-        Deter->Bifton(Path, file, 1);
+        bool SHA = (SE->Switchs["--SkipSHA1"]) ? 0 : 1;
+        Deter->Bifton(Path, file, 1,SHA);
         string Command;
         string ObjsPathName = "";
         string outputFile;
         int Compiler;
         string CompilerStandard;
-        int OK;
+        int OK=0;
         vector<string> Commands;
 #define CurrentFile Deter->CodePath[i]
+#define CurrentoutFile Deter->objPath[i]
         ShowBand("Compiling");
         for (int i = 0; i < Deter->CodePath.size(); i++)
-        {
+        {OK=0;
+        outputFile = (SE->Switchs["--Assembly"]) ? get_S_name(CurrentoutFile) : get_o_name(CurrentoutFile);
+            if(Deter->CodePath[i].size()>0){
+                
             Compiler = (CurrentFile[CurrentFile.size() - 1] == 'c') ? GCC : GXX;
             CompilerStandard = (Compiler == 1) ? "-std=c++17" : "-std=c17";
-            outputFile = (SE->Switchs["--Assembly"]) ? get_S_name(CurrentFile) : get_o_name(CurrentFile);
             Command = getCompiler(Compiler) + " " + Type + " -o" + outputFile + " " + CurrentFile + " " + CompilerStandard;
 
             Commands.push_back(Command);
             OK = system(Command.c_str());
             cout << getCurrentTime() << BOLDBLUE << " ~> " << YELLOW << Command << RESET << endl;
+            }
+
+            else{
+                cout << getCurrentTime() << setprecision(3) << BOLDMAGENTA << " ~> Object "<<YELLOW<<Deter->objPath[i]<< BOLDMAGENTA <<" Have been skipped" << RESET << endl;
+            }
+            
             if (OK == 0)
             {
                 if (i < Deter->objPath.size())
@@ -181,9 +191,7 @@ Task(Bifton_Run, SE)
             FullFile.append(Commands[i]).append("\n");
         string CPATE = current_path();
         replace(FullFile, CPATE, ".");
-
         system(LinkCommand.c_str());
-        string SizeTypes = "TGMK";
         long long RSize = filesize(get_E_name(file).c_str());
         Sizer Se = sizetoK(RSize, 1024);
         cout << "\t -> Executable Size : " << MAGENTA << Se.data << BOLDMAGENTA << Se.c << "B" << RESET << endl;

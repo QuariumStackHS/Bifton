@@ -421,6 +421,7 @@ typedef int (*sqlite3_callback)(void*,int,char**, char**);
 ** <li> The application must not modify the SQL statement text passed into
 **      the 2nd parameter of sqlite3_exec() while sqlite3_exec() is running.
 ** </ul>
+
 */
 SQLITE_API int sqlite3_exec(
   sqlite3*,                                  /* An open database */

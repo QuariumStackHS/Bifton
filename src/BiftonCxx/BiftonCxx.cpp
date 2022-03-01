@@ -85,9 +85,9 @@ bool Compare(char *I, char *J)
 
     return ret;
 }*/
-void FindIncludes(stringstream &FileContain, Deterministix *This, string Filename, bool print = 0)
+bool FindIncludes(stringstream &FileContain, Deterministix *This, string Filename, bool print = 0, bool SHA = 1)
 {
-
+    bool ret = 1;
     string C = FileContain.str();
     string Tofind = "#include";
     vector<int> Includes;
@@ -160,7 +160,7 @@ void FindIncludes(stringstream &FileContain, Deterministix *This, string Filenam
             }
         }
         Sizer S = sizetoK(This->LineAprox - BeforeLinenbr);
-        cout << RESET << GREEN " Done √" << RESET << "(Lines:" << setprecision(6) << MAGENTA << S.data << RESET<<BOLDMAGENTA << S.c<<RESET << ")" << RESET << endl;
+        cout << RESET << GREEN " Done √" << RESET << "(Lines:" << setprecision(6) << MAGENTA << S.data << RESET << BOLDMAGENTA << S.c << RESET << ")" << RESET << endl;
     }
     for (int i = 0; i < Includes.size(); i++)
     {
@@ -169,6 +169,7 @@ void FindIncludes(stringstream &FileContain, Deterministix *This, string Filenam
         TempsStr = "";
 #define Ii Includes[i]
 #define CIiStartPlus(a) C[Ii + a]
+        bool eee=0;
         while (Counta < C.size())
         {
             if (CIiStartPlus(Counta) == '"')
@@ -176,10 +177,13 @@ void FindIncludes(stringstream &FileContain, Deterministix *This, string Filenam
                 if (init)
                 {
                     Tempi = SplitPath_FileNAme(TempsStr);
-                    This->Bifton(Tempi->Directory, Tempi->FileName, print);
+                    eee=This->Bifton(Tempi->Directory, Tempi->FileName, print, SHA);
+                    ret = (ret == 1) ? eee : ret;
                     // cout<<current_path()<<" <> "<<Tempi->Directory<<" -> "<<exists(get_c_name(Tempi->FileName))<<" "<<get_c_name(Tempi->FileName)<<endl;
-                    if (exists(Tempi->Directory + get_c_name(Tempi->FileName)))
-                        This->Bifton(Tempi->Directory, get_c_name(Tempi->FileName), print);
+                    if (exists(Tempi->Directory + get_c_name(Tempi->FileName))){
+                        eee=This->Bifton(Tempi->Directory, get_c_name(Tempi->FileName), print, SHA);
+                        ret = (ret == 1) ?eee: ret;
+                        }
                     Counta = C.size();
                 }
                 else
@@ -190,6 +194,7 @@ void FindIncludes(stringstream &FileContain, Deterministix *This, string Filenam
             Counta++;
         }
     }
+    return ret;
 }
 string Deterministix::get_ALL_LinkageSwitch(char Separator)
 {
@@ -205,6 +210,9 @@ bool AlreadyIn(Deterministix *This, string P)
     bool ret = 0;
     for (int i = 0; i < This->CodePath.size(); i++)
         ret = (strcmp(This->CodePath[i].c_str(), P.c_str()) == 0) ? 1 : ret;
+    if (!ret)
+        for (int i = 0; i < This->objPath.size(); i++)
+            ret = (strcmp(This->objPath[i].c_str(), P.c_str()) == 0) ? 1 : ret;
     return ret;
 }
 void Deterministix::print()
@@ -223,12 +231,13 @@ bool Exist(Deterministix *Al, string Out)
     }
     return 0;
 }
-void Deterministix::Bifton(string Path, string Filename, bool Print)
+bool Deterministix::Bifton(string Path, string Filename, bool Print, bool SHA, bool ret)
 {
     if (strcmp(Path.c_str(), "") == 0)
         Path = "./";
     if (exists(Path))
     {
+
         stringstream ss;
         string EcPath = current_path();
         current_path(Path);
@@ -240,7 +249,7 @@ void Deterministix::Bifton(string Path, string Filename, bool Print)
             ss << File.rdbuf();
             if (Print)
                 cout << getCurrentTime() << BOLDBLUE << " Analysing -> " << CYAN << Filename;
-            FindIncludes(ss, this, Filename, Print);
+            ret = FindIncludes(ss, this, Filename, Print, SHA);
 
             if (!AlreadyIn(this, Cp + '/' + get_c_name(Filename)))
             {
@@ -248,9 +257,28 @@ void Deterministix::Bifton(string Path, string Filename, bool Print)
                 // cout << FP << endl;
                 //  cout<<FP<<(get_o_name(Filename)[get_o_name(Filename).size() - 1] == 'o')<<get_o_name(Filename)<<endl;
                 if (exists(Cp + '/' + get_c_name(FP)))
-                    CodePath.push_back(Cp + '/' + FP);
-                if (!Exist(this, get_o_name(FP)))
-                    objPath.push_back(Cp + '/' + get_o_name(FP));
+                { 
+                    bool A = MatchSHA1File(Cp + "/." + FP + ".SHA1", Cp + '/' + get_c_name(FP));
+
+                    bool B = 1;
+                    if (exists(Cp + '/' + get_H_name(FP)))
+                        B = MatchSHA1File(Cp + "/." + get_H_name(FP) + ".SHA1", Cp + '/' + get_H_name(FP));
+                    
+                    if (A && B&&ret && SHA)
+                    {
+
+                        ret = 1;
+                        CodePath.push_back("");
+                    }
+                    else
+                    {
+
+                        ret = 0;
+                        CodePath.push_back(Cp + '/' + FP);
+                    }
+
+                    objPath.push_back(Cp + '/' + FP);
+                }
             }
             for (map<string, string>::iterator it = I2SL.begin(); it != I2SL.end(); it.operator++())
             {
@@ -271,6 +299,7 @@ void Deterministix::Bifton(string Path, string Filename, bool Print)
         cout << getCurrentTime() << BOLDCYAN << " Error Path: '" << RESET << RED << Path << BOLDCYAN << "' Doesn't Exist!" << endl;
         exit(0);
     }
+    return ret;
 }
 void Deterministix::Register(string Code, string linkageswitch)
 {
