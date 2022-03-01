@@ -30,6 +30,7 @@ void SimpleExecuter::Run()
             KnownError = (PtrAddress == 0) ? 1 : 0;
             if (!KnownError)
                 (*PtrAddress)(this);
+            else if(CurrentArg.size()>0) cout<<"Unknows Arg: "<<CurrentArg<<endl;
         }
     }
 }

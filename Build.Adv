@@ -4,12 +4,12 @@
         @V%>git add -A ; git commit -m "Commiting" ; git push%                             $
 ;)
 |Build|(
-        @V%>./Bifton --FileCreate build src:Bifton.cpp%          $
-        @V%>./Bifton build src/SQLite3:shell.c%     $
-        @V%>./Bifton build src/ADV:Adv-Int.cpp%     $
+        @V%>Bifton --FileCreate build src:Bifton.cpp%          $
+        @V%>Bifton build src/SQLite3:shell.c%     $
+        @V%>Bifton build src/ADV:Adv-Int.cpp%     $
 ;)
 |Clean|(
-        @V%>./Bifton clean src:Bifton.cpp%          $
-        @V%>./Bifton clean src/SQLite3:shell.c%     $
-        @V%>./Bifton clean src/ADV:Adv-Int.cpp%     $
+        @V%>Bifton clean src:Bifton.cpp%          $
+        @V%>Bifton clean src/SQLite3:shell.c%     $
+        @V%>Bifton clean src/ADV:Adv-Int.cpp%     $
 ;)

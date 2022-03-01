@@ -4,11 +4,12 @@
 #include <iomanip>
 void ShowBand(string Var)
 {
+    cout << "\t ";
     for (int i = 0; i < 20 - (Var.size() - 1); i++)
-        cout<< "═";
-    cout << Var;
+        cout << RED << "═";
+    cout << BOLDGREEN << Var << RESET;
     for (int i = 0; i < 20 - (Var.size() - 1); i++)
-        cout <<  "═";
+        cout << RED << "═" << RESET;
     cout << endl;
 }
 
@@ -171,36 +172,37 @@ Task(Bifton_Run, SE)
         string LinkCommand = "gcc -lstdc++ " + ObjsPathName + " -O3 " + Deter->get_ALL_LinkageSwitch(' ') + " -o" + get_E_name(file);
         Commands.push_back(LinkCommand);
         Sizer S = sizetoK(Deter->LineAprox);
-        
-        cout << getCurrentTime() << setprecision(3) << BOLDMAGENTA << " ~> " << YELLOW << LinkCommand << RESET << endl;ShowBand("Task Done");
+
+        cout << getCurrentTime() << setprecision(3) << BOLDMAGENTA << " ~> " << YELLOW << LinkCommand << RESET << endl;
+        ShowBand("Task Done");
         cout << "\t -> Line of Code Analysed :" << MAGENTA << S.data << BOLDMAGENTA << S.c << RESET << endl;
         string FullFile = "";
         for (int i = 0; i < Commands.size(); i++)
             FullFile.append(Commands[i]).append("\n");
         string CPATE = current_path();
         replace(FullFile, CPATE, ".");
-        
+
         system(LinkCommand.c_str());
         string SizeTypes = "TGMK";
         long long RSize = filesize(get_E_name(file).c_str());
         Sizer Se = sizetoK(RSize, 1024);
         cout << "\t -> Executable Size : " << MAGENTA << Se.data << BOLDMAGENTA << Se.c << "B" << RESET << endl;
-        if(SE->Switchs["--FileCreate"]){
-        ofstream Cout(get_E_name(file) + "_Build.sh");
-        Cout << FullFile << endl;
-        Cout.close();
+        if (SE->Switchs["--FileCreate"])
+        {
+            ofstream Cout(get_E_name(file) + "_Build.sh");
+            Cout << FullFile << endl;
+            Cout.close();
         }
         Deter->print();
         delete Deter;
     }
-
 }
 
 int main(int argc, char **argv)
 {
     string CPPStandardVersion;
     Get_Version(CPPStandardVersion);
-    //cout << "Bifton on " << getOsName() << ": Build done using " << CPPStandardVersion << "\n";
+    // cout << "Bifton on " << getOsName() << ": Build done using " << CPPStandardVersion << "\n";
     SimpleExecuter *Session = new SimpleExecuter;
     Session->Register("build", &Bifton_Run);
     Session->Register("adv", &RunScript);
