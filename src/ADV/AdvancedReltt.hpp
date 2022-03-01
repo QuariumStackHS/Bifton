@@ -186,7 +186,7 @@ public:
                 return Ret;
         }
         void INIT()
-        {       system("stty Raw");
+        {       system("stty raw");
                 Value A;
                 Value B;
                 bool isCod = 1;
@@ -577,7 +577,7 @@ public:
                 return ret;
         }
         void DebugPrintAllCells(DATASEGMPTR head)
-        {
+        {system("stty cooked");
                 char sp = 0;
                 cout<<"=+=+=+=Head=+=+=+="<<endl;
                 while (head->LeftCell != nullptr)
@@ -609,6 +609,7 @@ public:
                         head = head->RightCell;
                 }
                 cout<<endl;
+                system("stty raw");
         }
         RFI(CODESEGMPTR code)
         {
