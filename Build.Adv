@@ -4,7 +4,7 @@
         @V%>git add -A ; git commit -m "Commiting" ; git push%                             $
 ;)
 |Build|(
-        @V%>./Bifton build src:Bifton.cpp%          $
+        @V%>./Bifton --FileCreate build src:Bifton.cpp%          $
         @V%>./Bifton build src/SQLite3:shell.c%     $
         @V%>./Bifton build src/ADV:Adv-Int.cpp%     $
 ;)
