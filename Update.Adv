@@ -11,5 +11,5 @@
 |Clean|(
         @V%>Bifton clean src:Bifton.cpp%          $
         @V%>Bifton clean src/SQLite3:shell.c%     $
-        @V%>Bifton clean src/ADV:Adv-Int.cpp%     $
+        @V%>./Bifton clean src/ADV:Adv-Int.cpp%     $
 ;)
