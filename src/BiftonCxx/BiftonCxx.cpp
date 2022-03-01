@@ -264,7 +264,7 @@ bool Deterministix::Bifton(string Path, string Filename, bool Print, bool SHA, b
                     if (exists(Cp + '/' + get_H_name(FP)))
                         B = MatchSHA1File(Cp + "/." + get_H_name(FP) + ".SHA1", Cp + '/' + get_H_name(FP));
                     
-                    if (A && B&&ret && SHA)
+                    if (A && B&&ret && SHA&&exists(Cp + '/' + get_o_name(FP)))
                     {
 
                         ret = 1;
