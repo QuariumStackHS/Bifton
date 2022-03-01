@@ -1,0 +1,10 @@
+
+
+if [[ $INDEVMODE -eq 1 ]] then
+    export INDEVMODE=0
+    export PATH="$TempPATH"
+    cd $BiftonPATH
+    echo "PATH have been reset"
+else
+    echo "You are not in Dev Mode!"
+fi

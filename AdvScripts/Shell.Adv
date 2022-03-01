@@ -10,7 +10,7 @@
 |Loop|(
 %>stty raw%$%>Waiting For input : %[>.]
 @V+++*++++"
-[,'! }} "@V_.>{{@^
+[,'! }}"@V_.>{{@^
 #Look if user input is 13(ENTER)#
 }_{
 ]
@@ -19,7 +19,7 @@
           <<< <<< <<<
           <<< <<< <<<
           <<< <  
-          %>stty cooked ; Adv-Int%
+          %>stty cooked;./Adv-Int%
           [>]
           +++++* +++ +++ +
           [<]>

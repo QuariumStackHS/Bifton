@@ -182,21 +182,21 @@ Task(Bifton_Run, SE)
             }
         }
         string LinkCommand;
-        Sizer S=Sizer('.','.');
+        Sizer S=sizetoK(Deter->LineAprox);
         if (Commands.size() >= 1)
         {
             ShowBand("!Linking!");
             LinkCommand = "gcc -lstdc++ " + ObjsPathName + " -O3 " + Deter->get_ALL_LinkageSwitch(' ') + " -o" + get_E_name(file);
             Commands.push_back(LinkCommand);
-            S = sizetoK(Deter->LineAprox);
+            
 
-            cout << getCurrentTime() << setprecision(3) << BOLDMAGENTA << " ~> " << YELLOW << LinkCommand << RESET << endl;
+            cout << getCurrentTime() << BOLDMAGENTA << " ~> " << YELLOW << LinkCommand << RESET << endl;
         }
         else{
             cout<<getCurrentTime()<<BOLDGREEN" ~> Nothing To link"<<RESET<<endl;
         }
         ShowBand("Task Done");
-        cout << "\t -> Line of Code Analysed :" << MAGENTA << S.data << BOLDMAGENTA << S.c << RESET << endl;
+        cout <<setprecision(6)<< "\t -> Line of Code Analysed : " << MAGENTA << S.data << BOLDMAGENTA << S.c << RESET << endl;
         string FullFile = "";
         for (int i = 0; i < Commands.size(); i++)
             FullFile.append(Commands[i]).append("\n");
@@ -205,7 +205,7 @@ Task(Bifton_Run, SE)
         system(LinkCommand.c_str());
         long long RSize = filesize(get_E_name(file).c_str());
         Sizer Se = sizetoK(RSize, 1024);
-        cout << "\t -> Executable Size : " << MAGENTA << Se.data << BOLDMAGENTA << Se.c << "B" << RESET << endl;
+        cout <<setprecision(3)<< "\t -> Executable Size \t  : " << MAGENTA << Se.data << BOLDMAGENTA << Se.c << "B" << RESET << endl;
         if (SE->Switchs["--FileCreate"])
         {
             ofstream Cout(get_E_name(file) + "_Build.sh");

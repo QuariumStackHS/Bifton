@@ -1,0 +1,12 @@
+
+if [[ $INDEVMODE -eq 1 ]]
+then
+    echo "You are already in Dev Mode"
+else 
+    export TempPATH="$PATH"
+    export BiftonPATH="$PWD"
+    export INDEVMODE=1
+    export PATH="$PWD:$PWD/Bin:$PATH"
+    echo "Added $PWD & <- \"Bin\"to PATH"
+fi
+cd $PWD/Bin
