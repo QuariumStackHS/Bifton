@@ -186,7 +186,7 @@ public:
                 return Ret;
         }
         void INIT()
-        {       system("stty raw");
+        {       
                 Value A;
                 Value B;
                 bool isCod = 1;
@@ -573,11 +573,11 @@ public:
                 cout
                     << "Program ended with Value : " << THISCELLVALUE << " at index : " << index << endl;
 #endif
-        system("stty cooked");
+        
                 return ret;
         }
         void DebugPrintAllCells(DATASEGMPTR head)
-        {system("stty cooked");
+        {
                 char sp = 0;
                 cout<<"=+=+=+=Head=+=+=+="<<endl;
                 while (head->LeftCell != nullptr)
