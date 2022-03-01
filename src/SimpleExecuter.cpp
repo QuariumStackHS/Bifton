@@ -19,7 +19,7 @@ void SimpleExecuter::Run()
     void (*PtrAddress)(SimpleExecuter *);
     bool KnownError = 0;
     string CurrentArg;
-    while (this->CurrentArgsIndex < this->Args.size())
+    while (this->CurrentArgsIndex+1 < this->Args.size())
     {
         CurrentArg = GetNextArg();
         if (CurrentArg[0] == '-')

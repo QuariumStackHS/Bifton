@@ -2,6 +2,7 @@
 
 int main(int argc,char**argv){
     if(argc==1){
+        Help();
         cout<<"Usage : "<<argv[0]<<" File.Adv"<<endl;
     }
     else{
