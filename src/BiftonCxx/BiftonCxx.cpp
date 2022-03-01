@@ -1,5 +1,6 @@
 #include "BiftonCxx.hpp"
 #include "Data/Registry.hpp"
+#include "SHA1/SHA1.hpp"
 #include <iomanip>
 string FMP(string g) { return string("<") + g + string(">"); }
 Deterministix::Deterministix()
