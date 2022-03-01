@@ -1,0 +1,8 @@
+
+if [[ $INDEVMODE -eq 1 ]] then
+    cd $BiftonPATH/Bin
+    $BiftonPATH/Bin/Bifton build $BiftonPATH/src:$1
+    cd $BiftonPATH/Env
+else
+    echo "cd $BiftonPATH ; source JoinDevEnv"
+fi

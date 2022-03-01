@@ -6,7 +6,7 @@ else
     export TempPATH="$PATH"
     export BiftonPATH="$PWD"
     export INDEVMODE=1
-    export PATH="$PWD:$PWD/Bin:$PATH"
-    echo "Added $PWD & <- \"Bin\"to PATH"
+    export PATH="$PWD:$PWD/Env:$PWD/Bin:$PATH"
+    echo "Added $PWD & <- \"Env\"to PATH"
 fi
-cd $PWD/Bin
+cd $PWD/Env
