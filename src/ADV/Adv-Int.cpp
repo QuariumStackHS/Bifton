@@ -2,11 +2,7 @@
 
 int main(int argc,char**argv){
     int ret=1;
-    if(argc==1){
-        Help();
-        cout<<"Usage : "<<argv[0]<<" File.Adv"<<endl;
-    }
-    else{
+    if(argc!=1){
         ifstream F(argv[1]);
         stringstream ss;
         ss<<
