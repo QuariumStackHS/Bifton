@@ -3,7 +3,7 @@
 %>stty raw%$
 @V+++*++++"
 [,'! }} "@V_.>{{@^
-#Look if user input is 27(ESC)#
+#Look if user input is 13(ENTER)#
 
 }_{
 

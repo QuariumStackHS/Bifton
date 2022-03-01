@@ -200,6 +200,7 @@ Task(Bifton_Run, SE)
 
 int main(int argc, char **argv)
 {
+    system("stty cooked");
     string CPPStandardVersion;
     Get_Version(CPPStandardVersion);
     // cout << "Bifton on " << getOsName() << ": Build done using " << CPPStandardVersion << "\n";
