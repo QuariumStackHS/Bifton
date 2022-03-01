@@ -8,10 +8,6 @@
 			"name": "src",
 			"path": "../src"
 		},
-		{
-			"name": "Output / Execution Folder",
-			"path": "../Out"
-		}
 
 		
 	],
@@ -26,7 +22,6 @@
 			"**/Thumbs.db": true,
 			"src/":true,
 			".vscode/": true,
-			"Out": true,
 			"**/*.o":true
 		},
 		
