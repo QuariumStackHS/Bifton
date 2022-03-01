@@ -182,12 +182,13 @@ Task(Bifton_Run, SE)
             }
         }
         string LinkCommand;
+        Sizer S;
         if (Commands.size() >= 1)
         {
             ShowBand("!Linking!");
             LinkCommand = "gcc -lstdc++ " + ObjsPathName + " -O3 " + Deter->get_ALL_LinkageSwitch(' ') + " -o" + get_E_name(file);
             Commands.push_back(LinkCommand);
-            Sizer S = sizetoK(Deter->LineAprox);
+            S = sizetoK(Deter->LineAprox);
 
             cout << getCurrentTime() << setprecision(3) << BOLDMAGENTA << " ~> " << YELLOW << LinkCommand << RESET << endl;
         }
