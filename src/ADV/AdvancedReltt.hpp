@@ -578,6 +578,7 @@ public:
         void DebugPrintAllCells(DATASEGMPTR head)
         {
                 char sp = 0;
+                cout<<"=+=+=+=Head=+=+=+="<<endl;
                 while (head->LeftCell != nullptr)
                         head = head->LeftCell;
                 while (head != nullptr)
@@ -590,7 +591,23 @@ public:
                                 cout << sp << "[(" << head->This << " , " << head->Index << " )]," << sp;
                         head = head->RightCell;
                 }
-                cout << endl;
+                
+                cout<<endl<<"=+=+=+=Math=+=+=+="<<endl;
+                sp = 0;
+                head=this->MATHCELL;
+                while (head->LeftCell != nullptr)
+                        head = head->LeftCell;
+                while (head != nullptr)
+                {
+                        if (index == head->Index)
+                                sp = '*';
+                        else
+                                sp = 0;
+                        if (head)
+                                cout << sp << "[(" << head->This << " , " << head->Index << " )]," << sp;
+                        head = head->RightCell;
+                }
+                cout<<endl;
         }
         RFI(CODESEGMPTR code)
         {
