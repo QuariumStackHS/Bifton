@@ -9,6 +9,23 @@
 #include <sstream>
 #include <string>
 
+
+class SHA1
+{
+public:
+    SHA1();
+    void update(const std::string &s);
+    void update(std::istream &is);
+    std::string final();
+    static std::string from_file(const std::string &filename);
+
+private:
+    uint32_t digest[5];
+    std::string buffer;
+    uint64_t transforms;
+};
+
+#endif /* SHA1_HPP */
 inline int MatchSHA1File(std::string StorageName,std::string Filename){
     SHA1 Creaper=SHA1();
     std::string CurrentKey=Creaper.from_file(Filename);
@@ -27,19 +44,3 @@ inline int MatchSHA1File(std::string StorageName,std::string Filename){
     }
 
 }
-class SHA1
-{
-public:
-    SHA1();
-    void update(const std::string &s);
-    void update(std::istream &is);
-    std::string final();
-    static std::string from_file(const std::string &filename);
-
-private:
-    uint32_t digest[5];
-    std::string buffer;
-    uint64_t transforms;
-};
-
-#endif /* SHA1_HPP */
