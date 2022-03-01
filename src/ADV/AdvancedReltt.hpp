@@ -609,7 +609,6 @@ public:
                         head = head->RightCell;
                 }
                 cout<<endl;
-                system("stty raw");
         }
         RFI(CODESEGMPTR code)
         {
