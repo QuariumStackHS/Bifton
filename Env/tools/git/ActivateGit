@@ -1,0 +1,8 @@
+if [[ $INDEVMODE -eq 1 ]] then
+    alias GitCommit="source $BifTool/git/Commit $1" 
+    alias GitPush="source $BifTool/git/Push"
+    alias GitFetch="source $BifTool/git/Fetch"
+    alias GitPull="source $BifTool/git/Pull"
+else
+    echo "cd $BiftonPATH ; source JoinDevEnv"
+fi

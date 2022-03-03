@@ -5,12 +5,13 @@ then
 else 
     export TempPATH="$PATH"
     export BiftonPATH="$PWD"
+    export BifTool="$BiftonPATH/Env/Tools"
     export INDEVMODE=1
-    alias Build="source $BiftonPATH/Env/Build $1 $2"
-    alias Clean="source $BiftonPATH/Env/Clean $1 $2"
-    alias QuitEnv="source $BiftonPATH/Env/QuitDevEnv"
+    alias Build="source $BifTool/Build $1 $2"
+    alias Clean="source $BifTool/Clean $1 $2"
+    alias QuitEnv="source $BifTool/QuitDevEnv"
     alias JoinBackEnv="source $BiftonPATH/JoinDevEnv"
-    alias AcGit="source $BiftonPATH/Env/ActivateGit"
+    alias AcGit="source $BifTool/git/ActivateGit"
     export PATH="$PWD:$PWD/Env:$PWD/Bin:$PATH"
     echo "Added $PWD & <- \"Env\"to PATH"
 fi
