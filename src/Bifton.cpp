@@ -136,9 +136,11 @@ Task(Bifton_Run, SE)
     {
 
         Deterministix *Deter = new Deterministix;
+        
+        bool SHA = !SE->Switchs["--SkipSHA1"];
+        Deter->Bifton(Path, file,!SE->Switchs["--Silence"], SHA);
+        if(!SE->Switchs["--Silence"])
         ShowBand("Analysing");
-        bool SHA = (SE->Switchs["--SkipSHA1"]) ? 0 : 1;
-        Deter->Bifton(Path, file, 1, SHA);
         string Command;
         string ObjsPathName = "";
         string outputFile;

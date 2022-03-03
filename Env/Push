@@ -1,0 +1,8 @@
+if [[ $INDEVMODE -eq 1 ]] then
+    export Tempath=$PWD
+    cd $BiftonPATH 
+    git push;
+    cd $Tempath
+else
+    echo "cd $BiftonPATH ; source JoinDevEnv"
+fi

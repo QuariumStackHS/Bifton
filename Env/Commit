@@ -2,8 +2,8 @@
 if [[ $INDEVMODE -eq 1 ]] then
     export Tempath=$PWD
     cd $BiftonPATH 
-    $BiftonPATH/Bin/Bifton --SkipSHA1 --FileCreate build $BiftonPATH/src:Bifton.cpp
-    git add -A ; git commit -m "Commiting" ; git push
+    $BiftonPATH/Bin/Bifton --SkipSHA1 --Silence --FileCreate build $BiftonPATH/src:Bifton.cpp
+    git add -A ; git commit -m "Commiting" ;
     cd $Tempath
 else
     echo "cd $BiftonPATH ; source JoinDevEnv"
