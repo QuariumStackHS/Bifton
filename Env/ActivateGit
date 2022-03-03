@@ -1,0 +1,6 @@
+if [[ $INDEVMODE -eq 1 ]] then
+    alias GitCommit="source $BiftonPATH/Env/Commit $1" 
+    alias GitPush="source $BiftonPATH/Env/Push" 
+else
+    echo "cd $BiftonPATH ; source JoinDevEnv"
+fi
