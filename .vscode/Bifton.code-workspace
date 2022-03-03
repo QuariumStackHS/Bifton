@@ -3,11 +3,15 @@
 		{
 			"name": "Root",
 			"path": ".."
+		},		{
+			"name": "Env",
+			"path": "../Env"
 		},
 		{
 			"name": "src",
 			"path": "../src"
 		},
+
 
 		
 	],
@@ -23,7 +27,8 @@
 			"src/":true,
 			".vscode/": true,
 			"**/*.o":true,
-			"**/*.SHA1":true
+			"**/*.SHA1":true,
+			"Env/":true
 		},
 		
 		"files.associations": {

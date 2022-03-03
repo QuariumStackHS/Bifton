@@ -1,5 +1,6 @@
 #include "ADV/AdvancedReltt.hpp"
-#include "SQLite3/sqlite3.h"
+//#include "DLLReader.hpp"
+//#include "SQLite3/sqlite3.h"
 #include "SimpleExecuter.hpp"
 #include <iomanip>
 void ShowBand(string Var)
@@ -183,20 +184,20 @@ Task(Bifton_Run, SE)
         }
         string LinkCommand;
         Sizer S=sizetoK(Deter->LineAprox);
+        Sizer SFE=sizetoK(Deter->RealLine);
         if (Commands.size() >= 1)
         {
             ShowBand("!Linking!");
             LinkCommand = "gcc -lstdc++ " + ObjsPathName + " -O3 " + Deter->get_ALL_LinkageSwitch(' ') + " -o" + get_E_name(file);
             Commands.push_back(LinkCommand);
-            
-
             cout << getCurrentTime() << BOLDMAGENTA << " ~> " << YELLOW << LinkCommand << RESET << endl;
         }
         else{
             cout<<getCurrentTime()<<BOLDGREEN" ~> Nothing To link"<<RESET<<endl;
         }
+
         ShowBand("Task Done");
-        cout <<setprecision(6)<< "\t -> Line of Code Analysed : " << MAGENTA << S.data << BOLDMAGENTA << S.c << RESET << endl;
+        cout <<setprecision(6)<< "\t -> Line of Code : " << MAGENTA << S.data << BOLDMAGENTA << S.c << RESET<<" / "<< MAGENTA << SFE.data << BOLDMAGENTA << SFE.c<<RESET<<" ( "<<RED<<setprecision(3)<<100*((double)Deter->RealLine/(double)Deter->LineAprox)<<RESET<<"% )" << endl;
         string FullFile = "";
         for (int i = 0; i < Commands.size(); i++)
             FullFile.append(Commands[i]).append("\n");
@@ -205,7 +206,7 @@ Task(Bifton_Run, SE)
         system(LinkCommand.c_str());
         long long RSize = filesize(get_E_name(file).c_str());
         Sizer Se = sizetoK(RSize, 1024);
-        cout <<setprecision(3)<< "\t -> Executable Size \t  : " << MAGENTA << Se.data << BOLDMAGENTA << Se.c << "B" << RESET << endl;
+        cout <<setprecision(3)<< "\t -> Executable Size \t\t  : " << MAGENTA << Se.data << BOLDMAGENTA << Se.c << "B" << RESET << endl;
         if (SE->Switchs["--FileCreate"])
         {
             ofstream Cout(get_E_name(file) + "_Build.sh");
@@ -226,6 +227,7 @@ int main(int argc, char **argv)
     Session->Register("build", &Bifton_Run);
     Session->Register("adv", &RunScript);
     Session->Register("clean", &Bifton_Clean);
+    //LoadAllDlls(Session,"DLLs");
     Session->Pass(argc, argv);
     Session->Run();
     return 0;

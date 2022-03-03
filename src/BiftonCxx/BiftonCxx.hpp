@@ -96,6 +96,7 @@ protected:
 
 public:
 int LineAprox=0;
+int RealLine=0;
     vector<string> CodePath;
     vector<string> objPath;
     Deterministix();

@@ -93,6 +93,7 @@ bool FindIncludes(stringstream &FileContain, Deterministix *This, string Filenam
     vector<int> Includes;
     vector<int> Color;
     int BeforeLinenbr = This->LineAprox;
+    int BeforeRealLinenbr = This->RealLine;
     int Count = 0;
     bool Skip = 0;
     bool OneLineSkip = 0;
@@ -108,7 +109,11 @@ bool FindIncludes(stringstream &FileContain, Deterministix *This, string Filenam
         if ((C[i] == '/') && (C[i + 1] == '/'))
             OneLineSkip = 1;
         if (C[i] == '\n')
+        {
+            if (!OneLineSkip && !Skip)
+                This->RealLine++;
             This->LineAprox++;
+        }
         OneLineSkip = ((C[i] == '\n') && OneLineSkip) ? 0 : OneLineSkip;
 
         if (!Skip && !OneLineSkip)
@@ -160,7 +165,10 @@ bool FindIncludes(stringstream &FileContain, Deterministix *This, string Filenam
             }
         }
         Sizer S = sizetoK(This->LineAprox - BeforeLinenbr);
-        cout << RESET << GREEN " Done √" << RESET << "(Lines:" << setprecision(6) << MAGENTA << S.data << RESET << BOLDMAGENTA << S.c << RESET << ")" << RESET << endl;
+        Sizer SFE = sizetoK(This->RealLine - BeforeRealLinenbr);
+        cout << RESET << GREEN " Done √" << RESET << " Lines of code : " << setprecision(6)
+        << MAGENTA << S.data << RESET << BOLDMAGENTA << S.c << RESET << " / " << MAGENTA << SFE.data << RESET << BOLDMAGENTA << SFE.c << RESET
+        << " ( " <<setprecision(3)<<RED<< 100*(((double)This->RealLine - BeforeRealLinenbr) / ((double)This->LineAprox - BeforeLinenbr)) <<RESET<< "% )" << endl;
     }
     for (int i = 0; i < Includes.size(); i++)
     {
@@ -169,7 +177,7 @@ bool FindIncludes(stringstream &FileContain, Deterministix *This, string Filenam
         TempsStr = "";
 #define Ii Includes[i]
 #define CIiStartPlus(a) C[Ii + a]
-        bool eee=0;
+        bool eee = 0;
         while (Counta < C.size())
         {
             if (CIiStartPlus(Counta) == '"')
@@ -177,13 +185,14 @@ bool FindIncludes(stringstream &FileContain, Deterministix *This, string Filenam
                 if (init)
                 {
                     Tempi = SplitPath_FileNAme(TempsStr);
-                    eee=This->Bifton(Tempi->Directory, Tempi->FileName, print, SHA);
+                    eee = This->Bifton(Tempi->Directory, Tempi->FileName, print, SHA);
                     ret = (ret == 1) ? eee : ret;
                     // cout<<current_path()<<" <> "<<Tempi->Directory<<" -> "<<exists(get_c_name(Tempi->FileName))<<" "<<get_c_name(Tempi->FileName)<<endl;
-                    if (exists(Tempi->Directory + get_c_name(Tempi->FileName))){
-                        eee=This->Bifton(Tempi->Directory, get_c_name(Tempi->FileName), print, SHA);
-                        ret = (ret == 1) ?eee: ret;
-                        }
+                    if (exists(Tempi->Directory + get_c_name(Tempi->FileName)))
+                    {
+                        eee = This->Bifton(Tempi->Directory, get_c_name(Tempi->FileName), print, SHA);
+                        ret = (ret == 1) ? eee : ret;
+                    }
                     Counta = C.size();
                 }
                 else
@@ -257,14 +266,14 @@ bool Deterministix::Bifton(string Path, string Filename, bool Print, bool SHA, b
                 // cout << FP << endl;
                 //  cout<<FP<<(get_o_name(Filename)[get_o_name(Filename).size() - 1] == 'o')<<get_o_name(Filename)<<endl;
                 if (exists(Cp + '/' + get_c_name(FP)))
-                { 
+                {
                     bool A = MatchSHA1File(Cp + "/." + FP + ".SHA1", Cp + '/' + get_c_name(FP));
 
                     bool B = 1;
                     if (exists(Cp + '/' + get_H_name(FP)))
                         B = MatchSHA1File(Cp + "/." + get_H_name(FP) + ".SHA1", Cp + '/' + get_H_name(FP));
-                    
-                    if (A && B&&ret && SHA&&exists(Cp + '/' + get_o_name(FP)))
+
+                    if (A && B && ret && SHA && exists(Cp + '/' + get_o_name(FP)))
                     {
 
                         ret = 1;

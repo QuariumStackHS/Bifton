@@ -1,5 +1,3 @@
-
-
 if [[ $INDEVMODE -eq 1 ]] then
     export INDEVMODE=0
     export PATH="$TempPATH"
