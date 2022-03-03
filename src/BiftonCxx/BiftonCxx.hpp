@@ -38,7 +38,8 @@
 #define CYAN "\033[36m"
 using namespace std;
 using namespace filesystem;
-string FMP(string g);
+string FMP(string);
+string FMS(string );
 inline void replace(string &input, const string &from, const string &to)
 {
     auto pos = 0;
@@ -100,7 +101,7 @@ int RealLine=0;
     vector<string> CodePath;
     vector<string> objPath;
     Deterministix();
-    void Register(string, string);
+    Deterministix * Register(string, string);
     void print();
     string get_ALL_LinkageSwitch(char Separator);
     bool Bifton(string, string, bool Print = 0,bool SHA=1,bool ret=1);

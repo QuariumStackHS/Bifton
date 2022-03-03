@@ -1,8 +1,13 @@
 #include "BiftonCxx.hpp"
 #include "Data/Registry.hpp"
+//delete next 2 line to stop SHA1 compare
 #include "SHA1/SHA1.hpp"
+#define PRINTSHA1
+// delete ^ if you dont want to see SHA1 output
+
 #include <iomanip>
 string FMP(string g) { return string("<") + g + string(">"); }
+string FMS(string g) { return string("\"") + g + string("\""); }
 Deterministix::Deterministix()
 {
     RegisterDet(this);
@@ -167,8 +172,8 @@ bool FindIncludes(stringstream &FileContain, Deterministix *This, string Filenam
         Sizer S = sizetoK(This->LineAprox - BeforeLinenbr);
         Sizer SFE = sizetoK(This->RealLine - BeforeRealLinenbr);
         cout << RESET << GREEN " Done √" << RESET << " Lines of code : " << setprecision(6)
-        << MAGENTA << S.data << RESET << BOLDMAGENTA << S.c << RESET << " / " << MAGENTA << SFE.data << RESET << BOLDMAGENTA << SFE.c << RESET
-        << " ( " <<setprecision(3)<<RED<< 100*(((double)This->RealLine - BeforeRealLinenbr) / ((double)This->LineAprox - BeforeLinenbr)) <<RESET<< "% )" << endl;
+             << MAGENTA << S.data << RESET << BOLDMAGENTA << S.c << RESET << " / " << MAGENTA << SFE.data << RESET << BOLDMAGENTA << SFE.c << RESET
+             << " ( " << setprecision(3) << RED << 100 * (((double)This->RealLine - BeforeRealLinenbr) / ((double)This->LineAprox - BeforeLinenbr)) << RESET << "% )" << endl;
     }
     for (int i = 0; i < Includes.size(); i++)
     {
@@ -244,6 +249,9 @@ bool Deterministix::Bifton(string Path, string Filename, bool Print, bool SHA, b
 {
     if (strcmp(Path.c_str(), "") == 0)
         Path = "./";
+    #ifdef SHA1_HPP
+    SHA1 Cyph = SHA1();
+    #endif
     if (exists(Path))
     {
 
@@ -257,7 +265,13 @@ bool Deterministix::Bifton(string Path, string Filename, bool Print, bool SHA, b
             ifstream File(Filename);
             ss << File.rdbuf();
             if (Print)
-                cout << getCurrentTime() << BOLDBLUE << " Analysing -> " << CYAN << Filename;
+                cout << getCurrentTime() << BOLDBLUE << " Analysing -> " << CYAN << Filename << RESET
+                #ifdef SHA1_HPP
+                #ifdef PRINTSHA1
+                 << " ( " << YELLOW<< Cyph.from_file(Filename) << RESET << " ) "
+                #endif
+                #endif
+                ;
             ret = FindIncludes(ss, this, Filename, Print, SHA);
 
             if (!AlreadyIn(this, Cp + '/' + get_c_name(Filename)))
@@ -267,6 +281,7 @@ bool Deterministix::Bifton(string Path, string Filename, bool Print, bool SHA, b
                 //  cout<<FP<<(get_o_name(Filename)[get_o_name(Filename).size() - 1] == 'o')<<get_o_name(Filename)<<endl;
                 if (exists(Cp + '/' + get_c_name(FP)))
                 {
+                    #ifdef SHA1_HPP
                     bool A = MatchSHA1File(Cp + "/." + FP + ".SHA1", Cp + '/' + get_c_name(FP));
 
                     bool B = 1;
@@ -281,17 +296,19 @@ bool Deterministix::Bifton(string Path, string Filename, bool Print, bool SHA, b
                     }
                     else
                     {
-
+                    #endif
+                    
                         ret = 0;
                         CodePath.push_back(Cp + '/' + FP);
+                    #ifdef SHA1_HPP
                     }
+                    #endif
 
                     objPath.push_back(Cp + '/' + FP);
                 }
             }
             for (map<string, string>::iterator it = I2SL.begin(); it != I2SL.end(); it.operator++())
             {
-
                 this->I2SLB[it->first] = (strstr(ss.str().c_str(), it->first.c_str())) ? 1 : this->I2SLB[it->first];
             }
         }
@@ -310,8 +327,9 @@ bool Deterministix::Bifton(string Path, string Filename, bool Print, bool SHA, b
     }
     return ret;
 }
-void Deterministix::Register(string Code, string linkageswitch)
+Deterministix *Deterministix::Register(string Code, string linkageswitch)
 {
     this->I2SL[Code] = linkageswitch,
     this->I2SLB[Code] = 0;
+    return this;
 }

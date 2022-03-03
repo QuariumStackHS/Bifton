@@ -149,20 +149,26 @@ Task(Bifton_Run, SE)
 #define CurrentFile Deter->CodePath[i]
 #define CurrentoutFile Deter->objPath[i]
         ShowBand("Compiling");
+        long long RSize;
+        
+        Sizer SeS=Sizer(' ',' ');
+         
         for (int i = 0; i < Deter->CodePath.size(); i++)
         {
             OK = 0;
             outputFile = (SE->Switchs["--Assembly"]) ? get_S_name(CurrentoutFile) : get_o_name(CurrentoutFile);
             if (Deter->CodePath[i].size() > 0)
             {
-
+                
                 Compiler = (CurrentFile[CurrentFile.size() - 1] == 'c') ? GCC : GXX;
                 CompilerStandard = (Compiler == 1) ? "-std=c++17" : "-std=c17";
                 Command = getCompiler(Compiler) + " " + Type + " -o" + outputFile + " " + CurrentFile + " " + CompilerStandard;
 
                 Commands.push_back(Command);
                 OK = system(Command.c_str());
-                cout << getCurrentTime() << BOLDBLUE << " ~> " << YELLOW << Command << RESET << endl;
+                RSize= filesize(outputFile.c_str());
+                SeS= sizetoK(RSize, 1024);
+                cout << getCurrentTime() << BOLDBLUE << " ~> " << YELLOW << Command << RESET<<" -> "<<setprecision(3)<<MAGENTA<<SeS.data<<BOLDMAGENTA<<SeS.c<<"B"<<RESET<< endl;
             }
 
             else
@@ -204,7 +210,7 @@ Task(Bifton_Run, SE)
         string CPATE = current_path();
         replace(FullFile, CPATE, ".");
         system(LinkCommand.c_str());
-        long long RSize = filesize(get_E_name(file).c_str());
+        RSize = filesize(get_E_name(file).c_str());
         Sizer Se = sizetoK(RSize, 1024);
         cout <<setprecision(3)<< "\t -> Executable Size \t\t  : " << MAGENTA << Se.data << BOLDMAGENTA << Se.c << "B" << RESET << endl;
         if (SE->Switchs["--FileCreate"])

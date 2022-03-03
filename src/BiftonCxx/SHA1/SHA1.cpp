@@ -1,5 +1,4 @@
 #include "SHA1.hpp"
-
 static const size_t BLOCK_INTS = 16;  /* number of 32bit integers per SHA1 block */
 static const size_t BLOCK_BYTES = BLOCK_INTS * 4;
 

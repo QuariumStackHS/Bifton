@@ -1,5 +1,5 @@
 #include "SimpleExecuter.hpp"
-
+#include <iostream>
 void SimpleExecuter::Pass(int argc, char **argv)
 {
     for (int i = 0; i < argc; i++)
