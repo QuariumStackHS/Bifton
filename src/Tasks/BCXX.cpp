@@ -137,7 +137,9 @@ Task(Bifton_Clean,SE)
                 ShowBand("!Linking!");
                 LinkCommand = "gcc -lstdc++ " + ObjsPathName + " -O3 " + Deter->get_ALL_LinkageSwitch(' ') + " -o" + get_E_name(file);
                 Commands.push_back(LinkCommand);
-                cout << getCurrentTime() << BOLDMAGENTA << " ~> " << YELLOW << LinkCommand << RESET << endl;
+                    Tempcomand=LinkCommand;    
+                    replace(Tempcomand, CPATE, ".");
+                cout << getCurrentTime() << BOLDMAGENTA << " ~> " << YELLOW << Tempcomand << RESET << endl;
             }
             else
             {
