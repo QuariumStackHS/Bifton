@@ -1,21 +1,20 @@
 {
 	"folders": [
 		{
+			"name": "vscode",
+			"path": "."
+		},
+		{
 			"name": "Root",
 			"path": ".."
 		},
 		{
-			"name": "Tools",
-			"path": "../Env/Tools"
-		},
-		{
-			"name": ".vscode",
-			"path": "./"
-		},
-
-		{
 			"name": "Bin",
 			"path": "../Bin"
+		},
+		{
+			"name": "Tools",
+			"path": "../Env/Tools"
 		},
 		{
 			"name": "Env",
@@ -23,8 +22,9 @@
 		},
 		{
 			"name": "src",
-			"path": "../src"
-		},
+			"path": "../src",
+			
+		}
 	],
 	"settings": {
 		"files.exclude": {

@@ -14,7 +14,7 @@ Deterministix::Deterministix()
 }
 string getCurrentTime()
 {
-    time_t t = time(0); // get time now
+    time_t t = time(0);
     tm *now = localtime(&t);
     stringstream ss;
     ss << RESET << (now->tm_hour) << ':'
@@ -67,29 +67,6 @@ bool Compare(char *I, char *J)
     }
     return 1;
 }
-/*bool Compare(stringstream &FileContain, string Filename)
-{
-    SHA256 ShaHash = SHA256();
-    ShaHash.update(FileContain.str());
-    char *ShaCurrentFile = (char *)ShaHash.digest();
-    char *ShaOldFile = (char *)ShaHash.digest();
-    bool ret = 1;
-    if (exists(Filename) && exists(get_c_name(Filename)))
-    {
-        ifstream f(Filename + ".Checksum");
-        stringstream ss;
-        f.read(ShaOldFile,32);
-        f.close();
-        ret = Compare(ShaOldFile,ShaCurrentFile);
-        cout << ret << endl;
-    }
-    else
-        ret = 0;
-    ofstream f(Filename + ".Checksum");
-    f<<ShaCurrentFile;
-
-    return ret;
-}*/
 bool FindIncludes(stringstream &FileContain, Deterministix *This, string Filename, bool print = 0, bool SHA = 1)
 {
     bool ret = 1;
@@ -104,8 +81,6 @@ bool FindIncludes(stringstream &FileContain, Deterministix *This, string Filenam
     bool OneLineSkip = 0;
     int IncludesINT = 0;
     int Uninclude = 0;
-
-    // if()
     for (int i = 0; i < C.size(); i++)
     {
 
@@ -192,7 +167,7 @@ bool FindIncludes(stringstream &FileContain, Deterministix *This, string Filenam
                     Tempi = SplitPath_FileNAme(TempsStr);
                     eee = This->Bifton(Tempi->Directory, Tempi->FileName, print, SHA);
                     ret = (ret == 1) ? eee : ret;
-                    // cout<<current_path()<<" <> "<<Tempi->Directory<<" -> "<<exists(get_c_name(Tempi->FileName))<<" "<<get_c_name(Tempi->FileName)<<endl;
+                    
                     if (exists(Tempi->Directory + get_c_name(Tempi->FileName)))
                     {
                         eee = This->Bifton(Tempi->Directory, get_c_name(Tempi->FileName), print, SHA);
@@ -277,8 +252,6 @@ bool Deterministix::Bifton(string Path, string Filename, bool Print, bool SHA, b
             if (!AlreadyIn(this, Cp + '/' + get_c_name(Filename)))
             {
                 string FP = get_c_name(Filename);
-                // cout << FP << endl;
-                //  cout<<FP<<(get_o_name(Filename)[get_o_name(Filename).size() - 1] == 'o')<<get_o_name(Filename)<<endl;
                 if (exists(Cp + '/' + get_c_name(FP)))
                 {
                     #ifdef SHA1_HPP

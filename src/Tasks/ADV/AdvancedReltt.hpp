@@ -1,8 +1,6 @@
 #define SET(C, D) newHelpByChar(C, D)
 #define IFNOTNULL(A)
 #ifndef CODESEGMPTR
-
-//#define DEBUG
 #define SOCKET
 #include <chrono>
 #include <cstring>
@@ -37,8 +35,8 @@ using namespace std;
 #define ON(var) ? var : !var
 #define ELSE0 : 0 ;
 #define RESET "\033[0m"
-#define BLACK "\033[30m"              /* Black */
-#define RED "\033[31m"                /* Red */
+#define BLACK "\033[30m"              
+#define RED "\033[31m"                
 #define GREEN "\033[32m"              /* Green */
 #define YELLOW "\033[33m"             /* Yellow */
 #define BLUE "\033[34m"               /* Blue */
@@ -962,5 +960,4 @@ int install()
         system(np.c_str());
         return 0;
 }
-
 #endif

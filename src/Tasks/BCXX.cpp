@@ -54,7 +54,6 @@ Task(Bifton_Clean,SE)
             }
         }
     }
-    // Deter->Bifton(Path, file);
 }
     Task(Bifton_build, SE)
     {
@@ -77,7 +76,8 @@ Task(Bifton_Clean,SE)
             if (!SE->Switchs["--Silence"])
                 ShowBand("Analysing");
             Deter->Bifton(Path, file, !SE->Switchs["--Silence"], SHA);
-
+            string CPATE = current_path();
+            string Tempcomand="";
             string Command;
             string ObjsPathName = "";
             string outputFile;
@@ -102,12 +102,14 @@ Task(Bifton_Clean,SE)
                     Compiler = (CurrentFile[CurrentFile.size() - 1] == 'c') ? GCC : GXX;
                     CompilerStandard = (Compiler == 1) ? "-std=c++17" : "-std=c17";
                     Command = getCompiler(Compiler) + " " + Type + " -o" + outputFile + " " + CurrentFile + " " + CompilerStandard;
-
+                    
+                    Tempcomand=Command;    
+                    replace(Tempcomand, CPATE, ".");
                     Commands.push_back(Command);
                     OK = system(Command.c_str());
                     RSize = filesize(outputFile.c_str());
                     SeS = sizetoK(RSize, 1024);
-                    cout << getCurrentTime() << BOLDBLUE << " ~> " << YELLOW << Command << RESET << " -> " << setprecision(3) << MAGENTA << SeS.data << BOLDMAGENTA << SeS.c << "B" << RESET << endl;
+                    cout << getCurrentTime() << BOLDBLUE << " ~> " << YELLOW << Tempcomand<< RESET << " -> " << setprecision(3) << MAGENTA << SeS.data << BOLDMAGENTA << SeS.c << "B" << RESET << endl;
                 }
 
                 else
@@ -143,11 +145,12 @@ Task(Bifton_Clean,SE)
             }
 
             ShowBand("Task Done");
-            cout << setprecision(6) << "\t -> Line of Code : " << MAGENTA << S.data << BOLDMAGENTA << S.c << RESET << " / " << MAGENTA << SFE.data << BOLDMAGENTA << SFE.c << RESET << " ( " << RED << setprecision(3) << 100 * ((double)Deter->RealLine / (double)Deter->LineAprox) << RESET << "% )" << endl;
+            cout << setprecision(3) << "\t -> Line of Code : " << MAGENTA << S.data << BOLDMAGENTA << S.c << RESET << " / " << MAGENTA << SFE.data << BOLDMAGENTA << SFE.c << RESET << " ( " << RED<< 100 * ((double)Deter->RealLine / (double)Deter->LineAprox) << RESET << "% )" << endl;
             string FullFile = "";
+
             for (int i = 0; i < Commands.size(); i++)
                 FullFile.append(Commands[i]).append("\n");
-            string CPATE = current_path();
+            CPATE = current_path();
             replace(FullFile, CPATE, ".");
             system(LinkCommand.c_str());
             RSize = filesize(get_E_name(file).c_str());
