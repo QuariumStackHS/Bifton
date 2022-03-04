@@ -115,7 +115,9 @@ Task(Bifton_Clean,SE)
 
                 else
                 {
-                    cout << getCurrentTime() << setprecision(3) << BOLDMAGENTA << " ~> Object " << YELLOW << Deter->objPath[i] << BOLDMAGENTA << " Have been skipped" << RESET << endl;
+                    Tempcomand=Deter->objPath[i];
+                    replace(Tempcomand, CPATE, ".");
+                    cout << getCurrentTime() << setprecision(3) << BOLDMAGENTA << " ~> Object " << YELLOW << Tempcomand << BOLDMAGENTA << " Have been skipped" << RESET << endl;
                 }
 
                 if (OK == 0)
@@ -133,13 +135,15 @@ Task(Bifton_Clean,SE)
             string LinkCommand;
             Sizer S = sizetoK(Deter->LineAprox);
             Sizer SFE = sizetoK(Deter->RealLine);
-            if (Commands.size() >= 1 && exists(outputFile))
+
+            if ((Commands.size() >= 1) ||(!exists(get_E_name(file))))
             {
                 ShowBand("!Linking!");
                 LinkCommand = "gcc -lstdc++ " + ObjsPathName + " -O3 " + Deter->get_ALL_LinkageSwitch(' ') + " -o" + get_E_name(file);
                 Commands.push_back(LinkCommand);
                     Tempcomand=LinkCommand;    
                     replace(Tempcomand, CPATE, ".");
+
                 cout << getCurrentTime() << BOLDMAGENTA << " ~> " << YELLOW << Tempcomand << RESET << endl;
             }
             else

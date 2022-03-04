@@ -84,7 +84,7 @@ bool FindIncludes(stringstream &FileContain, Deterministix *This, string Filenam
     for (int i = 0; i < C.size(); i++)
     {
 
-        if ((C[i] == '"') || ((C[i] == '/') && (C[i + 1] == '*')) || ((C[i] == '*') && (C[i + 1] == '/')))
+        if (((C[i] == '/') && (C[i + 1] == '*')) || ((C[i] == '*') && (C[i + 1] == '/')))
             Skip = !Skip;
         if ((C[i] == '/') && (C[i + 1] == '/'))
             OneLineSkip = 1;

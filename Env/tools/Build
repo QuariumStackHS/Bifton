@@ -1,7 +1,10 @@
 #!source
 if [[ $INDEVMODE -eq 1 ]] then
-    cd $BiftonPATH/Bin
+    cd $BiftonPATH
     $BiftonPATH/Bin/Bifton $2 build $BiftonPATH/src:$1
+    NAME=`echo $1 | cut -d'.' -f1`
+    cp $BiftonPATH/$NAME $BiftonPATH/Bin/$NAME
+    rm $BiftonPATH/$NAME
     cd $BiftonPATH/Env
 else
     echo "cd $BiftonPATH ; source JoinDevEnv"

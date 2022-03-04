@@ -41,6 +41,7 @@
 			"Env/": true,
 			"tools":true,
 			"Bin":true,
+			".tmp":true,
 		},
 		"files.associations": {
 			"map": "cpp",
