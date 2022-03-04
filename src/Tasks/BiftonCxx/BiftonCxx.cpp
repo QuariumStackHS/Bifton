@@ -247,6 +247,7 @@ bool Deterministix::Bifton(string Path, string Filename, bool Print, bool SHA, b
                 #endif
                 #endif
                 ;
+                this->AnalysedFiles++;
             ret = FindIncludes(ss, this, Filename, Print, SHA);
 
             if (!AlreadyIn(this, Cp + '/' + get_c_name(Filename)))

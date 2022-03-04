@@ -76,6 +76,7 @@ Task(Bifton_Clean,SE)
             if (!SE->Switchs["--Silence"])
                 ShowBand("Analysing");
             Deter->Bifton(Path, file, !SE->Switchs["--Silence"], SHA);
+            cout <<getCurrentTime()<<BOLDYELLOW<<" Analysed  -> "<<RESET<<MAGENTA<< Deter->AnalysedFiles<<BOLDYELLOW<<" Files"<<RESET<<endl;
             string CPATE = current_path();
             string Tempcomand="";
             string Command;
@@ -132,7 +133,7 @@ Task(Bifton_Clean,SE)
             string LinkCommand;
             Sizer S = sizetoK(Deter->LineAprox);
             Sizer SFE = sizetoK(Deter->RealLine);
-            if (Commands.size() >= 1)
+            if (Commands.size() >= 1 && exists(outputFile))
             {
                 ShowBand("!Linking!");
                 LinkCommand = "gcc -lstdc++ " + ObjsPathName + " -O3 " + Deter->get_ALL_LinkageSwitch(' ') + " -o" + get_E_name(file);
@@ -158,6 +159,7 @@ Task(Bifton_Clean,SE)
             RSize = filesize(get_E_name(file).c_str());
             Sizer Se = sizetoK(RSize, 1024);
             cout << setprecision(3) << "\t -> Executable Size \t\t  : " << MAGENTA << Se.data << BOLDMAGENTA << Se.c << "B" << RESET << endl;
+
             if (SE->Switchs["--FileCreate"])
             {
                 ofstream Cout(get_E_name(file) + "_Build.sh");
