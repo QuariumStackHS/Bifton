@@ -40,6 +40,32 @@ using namespace std;
 using namespace filesystem;
 string FMP(string);
 string FMS(string );
+inline std::ifstream::pos_type filesize(const char *filename)
+{
+    std::ifstream in(filename, std::ifstream::ate | std::ifstream::binary);
+    return in.tellg();
+}
+inline void ShowBand(string Var)
+{
+    cout << "\t ";
+    for (int i = 0; i < 20 - (Var.size() - 1); i++)
+        cout << RED << "═";
+    cout << BOLDGREEN << Var << RESET;
+    for (int i = 0; i < 20 - (Var.size() - 1); i++)
+        cout << RED << "═" << RESET;
+    cout << endl;
+}
+inline void SplitPATHSFromCommand(string *Path, string *file, string *eArg)
+{
+    for (int i = 0; (eArg->at(i) != (':')) && (i != eArg->size()); i++)
+    {
+        Path->push_back(eArg->at(i));
+    }
+    for (int i = Path->size() + 1; i < eArg->size(); i++)
+    {
+        file->push_back(eArg->at(i));
+    }
+}
 inline void replace(string &input, const string &from, const string &to)
 {
     auto pos = 0;

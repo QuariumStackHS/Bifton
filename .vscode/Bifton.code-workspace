@@ -3,7 +3,21 @@
 		{
 			"name": "Root",
 			"path": ".."
-		},		{
+		},
+		{
+			"name": "Tools",
+			"path": "../Env/Tools"
+		},
+		{
+			"name": ".vscode",
+			"path": "./"
+		},
+
+		{
+			"name": "Bin",
+			"path": "../Bin"
+		},
+		{
 			"name": "Env",
 			"path": "../Env"
 		},
@@ -11,11 +25,7 @@
 			"name": "src",
 			"path": "../src"
 		},
-
-
-		
 	],
-
 	"settings": {
 		"files.exclude": {
 			"**/.git": true,
@@ -24,13 +34,14 @@
 			"**/CVS": true,
 			"**/.DS_Store": true,
 			"**/Thumbs.db": true,
-			"src/":true,
+			"src/": true,
 			".vscode/": true,
-			"**/*.o":true,
-			"**/*.SHA1":true,
-			"Env/":true
+			"**/*.o": true,
+			"**/*.SHA1": true,
+			"Env/": true,
+			"tools":true,
+			"Bin":true,
 		},
-		
 		"files.associations": {
 			"map": "cpp",
 			"memory": "cpp",
