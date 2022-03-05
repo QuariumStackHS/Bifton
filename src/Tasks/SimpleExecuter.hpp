@@ -1,6 +1,6 @@
 #ifndef SEMPLEEXECUTER_HPP
 #define SEMPLEEXECUTER_HPP
-#include "BiftonCxx/BiftonCxx.hpp"
+#include "BCXX/BiftonCxx/BiftonCxx.hpp"
 
 class SimpleExecuter
 {

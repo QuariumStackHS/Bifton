@@ -1,4 +1,4 @@
-#include "SimpleExecuter.hpp"
+#include "BCXX.hpp"
 namespace BCXX
 {
     #define GCC 0
@@ -139,7 +139,7 @@ Task(Bifton_Clean,SE)
             if ((Commands.size() >= 1) ||(!exists(get_E_name(file))))
             {
                 ShowBand("!Linking!");
-                LinkCommand = "gcc -lstdc++ " + ObjsPathName + " -O3 " + Deter->get_ALL_LinkageSwitch(' ') + " -o" + get_E_name(file);
+                LinkCommand = "gcc -lstdc++ " + ObjsPathName + "-O3" + Deter->get_ALL_LinkageSwitch(' ') + " -o" + get_E_name(file);
                 Commands.push_back(LinkCommand);
                     Tempcomand=LinkCommand;    
                     replace(Tempcomand, CPATE, ".");
