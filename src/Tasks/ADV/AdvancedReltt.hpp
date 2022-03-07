@@ -113,7 +113,6 @@ class RFI
 public:
         DATASEGMPTR DataSegm;
 
-        // private:
         map<string, CODESEGMPTR> CodeSegm;
         string FileName = "";
         VMAPPTR VMap;
@@ -205,7 +204,7 @@ public:
                                 if (inVName)
                                 {
                                         this->Definition[Vname] = i;
-                                        // exit(0);
+                                        
                                         Vname = "";
                                 }
                                 inVName = (!inVName);
@@ -242,7 +241,7 @@ public:
                                         A = temp->at(temp->size() - 1);
                                         B = i;
                                         temp->pop_back();
-                                        (*VMap)[A] = B; //&&
+                                        (*VMap)[A] = B; 
                                         (*VMap)[B] = A;
                                 }
                                 STOP;
@@ -299,7 +298,7 @@ public:
                         Noze->This = (int)(*CodeSegm[FileName])[j];
                         ireplace = jreplace;
 
-                        // printcell(Noze);
+                        
                 }
                 index = Tempindex;
                 THISCELL = temp;
@@ -319,7 +318,7 @@ public:
         void PerformMath(int *K)
         {
                 ++*K;
-                // cout << THISMATHCELLVALUE << " | " << THISCELLVALUE << endl;
+                
                 switch (CodeSegm[FileName]->at(*K))
                 {
 #define THISCELLVSMATHCELL(OP)                           \
@@ -380,7 +379,7 @@ public:
                 bool isfnc = 0;
                 this->StackRun.push_back(CodeSegm[FileName]->size());
                 for (Value i = Definition["Main"] + 2; i < (CodeSegm[FileName]->size()); i++)
-                { // cout<<CodeSegm[FileName]->at(i)<<endl;
+                {
                         if (i == 2)
                         {
                                 i = CodeSegm[FileName]->size();
@@ -463,11 +462,11 @@ public:
                                                 temp = "";
                                                 STOP;
                                         case ';':
-                                                // cout<< (StackRun.size()>0)<<endl;
+                                                
                                                 if (StackRun.size() > 1)
                                                 {
                                                         i = StackRun[StackRun.size() - 1];
-                                                        // cout<<i<<endl;
+                                                        
                                                         StackRun.pop_back();
                                                 }
                                                 else
@@ -506,7 +505,7 @@ public:
                                                 K.close();
                                                 STOP;
                                         case '*':
-                                                // cout << THISCELLVALUE << endl;
+                                                
                                                 if (!DataSegm->locked)
                                                         THISCELLVALUE = THISCELLVALUE * THISCELLVALUE;
                                                 STOP;
@@ -547,21 +546,6 @@ public:
                                                 STOP;
                                         case '\'':
                                                 PerformMath(&i);
-                                                STOP;
-#if defined(SOCKET)
-                                        case 'O':
-                                                // open socket read ip >
-                                                STOP;
-                                        case 'P':
-                                                // put what is to right in socket to the interet
-                                                STOP;
-                                        case 'I':
-                                                // input from connection to the
-                                                STOP;
-#endif
-                                        case ' ':
-                                                // cout << "Space ERROR you can't have a ' ' in the code! come on!" << endl;
-                                                // exit(0);
                                                 STOP;
                                         default:
                                                 STOP
@@ -633,7 +617,7 @@ public:
         {
                 delete this->CodeSegm[FileName];
                 delete this->temp;
-                // i know there is not a TOTAL delete
+                
                 delete this->DataSegm;
                 delete this->DataSegmS_;
                 delete this->VMap;
@@ -822,11 +806,10 @@ int Link()
                 {
                         pathp = entry.path().c_str();
                         p = ifstream(pathp);
-                        /*#Linked#*/
-                        // cout<<p.<<endl;
+  
                         ss << p.rdbuf();
                         temp = ss.str();
-                        // cout<<temp<<endl;
+                        
                         while (temp.size() > j)
                         {
                                 if (Found[j] == (temp[j]))
@@ -864,7 +847,7 @@ int Link()
                                         }
                                 }
                         }
-                        // cout<<pathp<<Linked<<endl;
+                        
                         if (Linked)
                         {
                                 tempnc = "#include <RFI.hpp>\nint main(){CODESEGM *Code=new CODESEGM(\"" + tempnc + "\");RFI*Int=new RFI(Code);Int->Execute();delete Int;return 0;}";

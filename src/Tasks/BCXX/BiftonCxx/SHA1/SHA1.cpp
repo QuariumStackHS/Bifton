@@ -30,10 +30,6 @@ inline static uint32_t blk(const uint32_t block[BLOCK_INTS], const size_t i)
 }
 
 
-/*
- * (R0+R1), R2, R3, R4 are the different operations used in SHA1
- */
-
 inline static void R0(const uint32_t block[BLOCK_INTS], const uint32_t v, uint32_t &w, const uint32_t x, const uint32_t y, uint32_t &z, const size_t i)
 {
     z += ((w&(x^y))^y) + block[i] + 0x5a827999 + rol(v, 5);
@@ -73,9 +69,6 @@ inline static void R4(uint32_t block[BLOCK_INTS], const uint32_t v, uint32_t &w,
 }
 
 
-/*
- * Hash a single 512-bit block. This is the core of the algorithm.
- */
 
 inline static void transform(uint32_t digest[], uint32_t block[BLOCK_INTS], uint64_t &transforms)
 {
@@ -225,9 +218,6 @@ inline void SHA1::update(std::istream &is)
 }
 
 
-/*
- * Add padding and return the message digest.
- */
 
 inline std::string SHA1::final()
 {

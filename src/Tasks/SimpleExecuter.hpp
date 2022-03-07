@@ -20,6 +20,10 @@ public:
     virtual void Run();
 };
 #define Task(FNCNAME,SimpleExecuterVarName)void FNCNAME(SimpleExecuter *SimpleExecuterVarName)
+#define EndTask(FNCNAME,NMFNCNAME) namespace NMFNCNAME {void (*PtrAddress)(SimpleExecuter *)= &FNCNAME;}
+#define __Register(NameSpace,SimpleExecuterVarName)void NameSpace::Register(SimpleExecuter *SimpleExecuterVarName)
+#define __GRegister(NameSpace) NameSpace :: Register
+#define __RegisterHPP(NameSpace)namespace NameSpace{ void Register(SimpleExecuter *);}
 #define DLLExport(FNCNAME) extern "C" void FCNAME
 
 #define DLLInit(Name) void (* Name )(SimpleExecuter*)

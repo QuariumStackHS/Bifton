@@ -1,9 +1,9 @@
 #include "BiftonCxx.hpp"
 #include "Data/Registry.hpp"
-//delete next 2 line to stop SHA1 compare
+/*delete next 2 line to stop SHA1 compare*/
 #include "SHA1/SHA1.hpp"
 #define PRINTSHA1
-// delete ^ if you dont want to see SHA1 output
+/* delete ^ if you dont want to see SHA1 output */
 
 #include <iomanip>
 string FMP(string g) { return string("<") + g + string(">"); }
@@ -289,7 +289,6 @@ bool Deterministix::Bifton(string Path, string Filename, bool Print, bool SHA, b
         else if (!Treated[Filename])
         {
             cout << getCurrentTime() << BOLDCYAN << " Error File: '" << RESET << RED << Filename << BOLDCYAN << "' Doesn't Exist! in " << current_path() << RESET << endl;
-            // exit(0);
         }
         current_path(EcPath);
     }
