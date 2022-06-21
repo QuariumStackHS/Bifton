@@ -191,6 +191,7 @@ string Deterministix::get_ALL_LinkageSwitch(char Separator)
     for (map<string, string>::iterator it = I2SL.begin(); it != I2SL.end(); it.operator++())
         if (this->I2SLB[it->first])
             ret.append(it->second) += Separator;
+    if (ret.size())
     ret.pop_back();
     return ret;
 }

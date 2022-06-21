@@ -138,7 +138,8 @@ Task(Bifton_build, SE)
         if ((Commands.size() >= 1) || (!exists(get_E_name(file))))
         {
             ShowBand("!Linking!");
-            LinkCommand = "gcc -lstdc++ " + ObjsPathName + "-O3 " + Deter->get_ALL_LinkageSwitch(' ') + " -o" + get_E_name(file);
+            LinkCommand = "gcc -lstdc++ "+ObjsPathName + "-O3 "+ Deter->get_ALL_LinkageSwitch(' ') + " -o" + get_E_name(file);
+            //cout<<LinkCommand<<endl;
             Commands.push_back(LinkCommand);
             Tempcomand = LinkCommand;
             replace(Tempcomand, CPATE, ".");
