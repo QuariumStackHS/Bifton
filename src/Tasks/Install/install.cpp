@@ -26,5 +26,5 @@ Task(Main,SE){
 }
 
     __Register(INSTALL,SE){
-
+        SE->Register("Install",&Main);
     }
