@@ -72,6 +72,8 @@ Task(Bifton_build, SE)
         Deterministix *Deter = new Deterministix;
 
         bool SHA = !SE->Switchs["--SkipSHA1"];
+
+        
         if (!SE->Switchs["--Silence"])
             ShowBand("Analysing");
         Deter->Bifton(Path, file, !SE->Switchs["--Silence"], SHA);

@@ -1,6 +1,6 @@
 if [[ $INDEVMODE -eq 1 ]] then
     cd $BiftonPATH/Bin
-    $BiftonPATH/Bin/Bifton $2 clean $BiftonPATH/src:$1
+    $BiftonPATH/Bifton $2 clean $BiftonPATH/src:$1
     cd $BiftonPATH/Env
 else
     echo "cd $BiftonPATH ; source JoinDevEnv"

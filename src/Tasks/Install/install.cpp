@@ -14,9 +14,9 @@ Task(Main,SE){
         in >> oldins;
     }
     else{
-        cout<<"Cant find previous installation Path exiting"<<endl;exit(0);
+        //cout<<"Cant find previous installation Path exiting"<<endl;exit(0);
     }
-    string cmd="./Bifton build src/:Bifton.cpp";
+    string cmd="./Bifton --SkipSHA1 build src/:Bifton.cpp";
             system(cmd.c_str());
 
             cout<<"Updated cgp at: "<<oldins<<endl;
