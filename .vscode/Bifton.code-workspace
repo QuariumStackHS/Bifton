@@ -91,7 +91,7 @@
 			"initializer_list": "cpp",
 			"iomanip": "cpp",
 			"ios": "cpp",
-			"filesystem":"cpp",
+			"filesystem": "cpp",
 			"istream": "cpp",
 			"iterator": "cpp",
 			"limits": "cpp",
@@ -110,7 +110,8 @@
 			"tuple": "cpp",
 			"type_traits": "cpp",
 			"typeinfo": "cpp",
-			"unordered_map": "cpp"
+			"unordered_map": "cpp",
+			"lprefix.h": "c"
 		}
 	}
 }

@@ -17,6 +17,11 @@ string getCompiler(int C)
         break;
     }
 }
+Task(HELP,SE){
+
+    SE->PrintHelp();
+}
+EndTask(HELP,BCXX_HELP)
 Task(Bifton_Clean, SE)
 {
     string eArg = SE->GetNextArg();
@@ -177,8 +182,18 @@ Task(Bifton_build, SE)
     }
 }
 EndTask(Bifton_build, BXX);
+Task(BXXNOE,a){
+a->GetNextArg();
+}
+EndTask(BXXNOE,BXXNONE)
 __Register(BCXX, SE)
 {
     SE->Register("build", BXX::PtrAddress);
     SE->Register("clean", BCX::PtrAddress);
+    SE->Register("help", BCXX_HELP::PtrAddress);
+}
+__Register(NONEXX, SE)
+{
+    //SE->Register(" ", BXXNONE::PtrAddress);
+
 }

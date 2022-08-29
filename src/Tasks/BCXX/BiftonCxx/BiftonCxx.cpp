@@ -167,7 +167,7 @@ bool FindIncludes(stringstream &FileContain, Deterministix *This, string Filenam
                     Tempi = SplitPath_FileNAme(TempsStr);
                     eee = This->Bifton(Tempi->Directory, Tempi->FileName, print, SHA);
                     ret = (ret == 1) ? eee : ret;
-                    
+
                     if (exists(Tempi->Directory + get_c_name(Tempi->FileName)))
                     {
                         eee = This->Bifton(Tempi->Directory, get_c_name(Tempi->FileName), print, SHA);
@@ -192,7 +192,7 @@ string Deterministix::get_ALL_LinkageSwitch(char Separator)
         if (this->I2SLB[it->first])
             ret.append(it->second) += Separator;
     if (ret.size())
-    ret.pop_back();
+        ret.pop_back();
     return ret;
 }
 bool AlreadyIn(Deterministix *This, string P)
@@ -207,10 +207,14 @@ bool AlreadyIn(Deterministix *This, string P)
 }
 void Deterministix::print()
 {
-
-    for (map<string, string>::iterator it = I2SL.begin(); it != I2SL.end(); it.operator++())
+    for (map<string, string>::iterator it = I2SL.begin(); it != I2SL.end(); it.operator++()){
         if (this->I2SLB[it->first])
-            cout << "\t -> " << BOLDMAGENTA << it->second << GREEN << "(" << BOLDCYAN << it->first << GREEN << ")" << RESET << endl;
+        {
+
+            cout
+                << "\t -> " << BOLDMAGENTA << it->second << GREEN << "(" << BOLDCYAN << it->first << GREEN << ")" << RESET << endl;
+        }
+    }
 }
 bool Exist(Deterministix *Al, string Out)
 {
@@ -225,9 +229,9 @@ bool Deterministix::Bifton(string Path, string Filename, bool Print, bool SHA, b
 {
     if (strcmp(Path.c_str(), "") == 0)
         Path = "./";
-    #ifdef SHA1_HPP
+#ifdef SHA1_HPP
     SHA1 Cyph = SHA1();
-    #endif
+#endif
     if (exists(Path))
     {
 
@@ -242,13 +246,13 @@ bool Deterministix::Bifton(string Path, string Filename, bool Print, bool SHA, b
             ss << File.rdbuf();
             if (Print)
                 cout << getCurrentTime() << BOLDBLUE << " Analysing -> " << CYAN << Filename << RESET
-                #ifdef SHA1_HPP
-                #ifdef PRINTSHA1
-                 << " ( " << YELLOW<< Cyph.from_file(Filename) << RESET << " ) "
-                #endif
-                #endif
-                ;
-                this->AnalysedFiles++;
+#ifdef SHA1_HPP
+#ifdef PRINTSHA1
+                     << " ( " << YELLOW << Cyph.from_file(Filename) << RESET << " ) "
+#endif
+#endif
+                    ;
+            this->AnalysedFiles++;
             ret = FindIncludes(ss, this, Filename, Print, SHA);
 
             if (!AlreadyIn(this, Cp + '/' + get_c_name(Filename)))
@@ -256,7 +260,7 @@ bool Deterministix::Bifton(string Path, string Filename, bool Print, bool SHA, b
                 string FP = get_c_name(Filename);
                 if (exists(Cp + '/' + get_c_name(FP)))
                 {
-                    #ifdef SHA1_HPP
+#ifdef SHA1_HPP
                     bool A = MatchSHA1File(Cp + "/." + FP + ".SHA1", Cp + '/' + get_c_name(FP));
 
                     bool B = 1;
@@ -271,13 +275,13 @@ bool Deterministix::Bifton(string Path, string Filename, bool Print, bool SHA, b
                     }
                     else
                     {
-                    #endif
-                    
+#endif
+
                         ret = 0;
                         CodePath.push_back(Cp + '/' + FP);
-                    #ifdef SHA1_HPP
+#ifdef SHA1_HPP
                     }
-                    #endif
+#endif
 
                     objPath.push_back(Cp + '/' + FP);
                 }
@@ -303,7 +307,7 @@ bool Deterministix::Bifton(string Path, string Filename, bool Print, bool SHA, b
 }
 Deterministix *Deterministix::Register(string Code, string linkageswitch)
 {
-    this->I2SL[Code] = linkageswitch,
+    this->I2SL[Code] = linkageswitch;
     this->I2SLB[Code] = 0;
     return this;
 }

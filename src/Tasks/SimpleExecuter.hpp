@@ -18,6 +18,7 @@ public:
     virtual string GetNextArg();
     virtual void Register(string Sw, void (*PtrAddress)(SimpleExecuter *));
     virtual void Run();
+    virtual void PrintHelp();
 };
 #define Task(FNCNAME,SimpleExecuterVarName)void FNCNAME(SimpleExecuter *SimpleExecuterVarName)
 #define EndTask(FNCNAME,NMFNCNAME) namespace NMFNCNAME {void (*PtrAddress)(SimpleExecuter *)= &FNCNAME;}

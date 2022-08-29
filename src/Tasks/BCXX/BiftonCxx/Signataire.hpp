@@ -74,10 +74,10 @@ inline bool Dif1(double K, double i)
     return 0;
 }
 
-class Signataire
+class RSA
 {
 public:
-    inline Signataire()
+    inline RSA()
     {
         p = GenPrime(powl(2, MAXP), powl(2, MINP));
         q = GenPrime(powl(2, MAXP), powl(2, MINP));
@@ -86,12 +86,12 @@ public:
         phi = (p - 1) * (q - 1);
         d = fmod(1 / e, phi); //
     }
-    inline Signataire(double ec, long long nc)
+    inline RSA(double ec, long long nc)
     {
         this->e = ec;
         this->n = nc;
     }
-    inline Signataire(string filename)
+    inline RSA(string filename)
     {
         ifstream FK(filename + ".VSig");
         stringstream ss;
@@ -171,6 +171,7 @@ public:
         for (int i = 0; i < Signature->size(); i++)
             PUKs << double2longlong(Signature->at(i)) << ";";
     }
+
     bool isValide(vector<double> *Signature, string k)
     {
         if (Signature->size() != 0)
@@ -186,3 +187,7 @@ public:
     long long p, q, phi, n;
     double d, e;
 };
+/**
+ * Given a string, this function will encode it in 64b (with padding)
+ */
+
