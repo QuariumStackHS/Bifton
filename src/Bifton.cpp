@@ -28,9 +28,14 @@ int main(int argc, char **argv)
     {
 
         cout << "Signing Executable..." << endl;
-        RSA V;
         //cout << double2longlong(V.d) << endl;
+        V=RSA();
+        cout<<V.phi<<endl;
+        V.SaveSig(argv[0]);
+
     }
+
+
     string CPPStandardVersion;
     Get_Version(CPPStandardVersion);
     SimpleExecuter *Session = new SimpleExecuter;
