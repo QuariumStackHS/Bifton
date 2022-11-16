@@ -8,7 +8,8 @@
 #include <iostream>
 #include <map>
 #include <sstream>
-#include <string>
+#include<string>
+#include <cstring>
 #include <vector>
 
 #define RESET "\033[0m"

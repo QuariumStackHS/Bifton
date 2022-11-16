@@ -1,4 +1,5 @@
-#include <string>
+#include<string>
+#include <cstring>
 inline std::string getOsName()
 {
 #ifdef _WIN32

@@ -1,34 +1,34 @@
 
 
-#include <string>
+#include<string>
+#include <cstring>
 #include <math.h>
 #include <fstream>
 #include <filesystem>
 #include <sstream>
 #include <iostream>
-#include "./SHA1/SHA1.hpp"
+#include "SHA1/SHA1.hpp"
 #include <vector>
 using namespace std;
-#define MINP 40
+#define MINP 32
 #define MAXP 63
-static const char* B64chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+static const char *B64chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
 static const int B64index[256] =
-{
-    0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-    0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-    0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  62, 63, 62, 62, 63,
-    52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 0,  0,  0,  0,  0,  0,
-    0,  0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  10, 11, 12, 13, 14,
-    15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 0,  0,  0,  0,  63,
-    0,  26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40,
-    41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51
-};
+    {
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 62, 63, 62, 62, 63,
+        52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 0, 0, 0, 0, 0, 0,
+        0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
+        15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 0, 0, 0, 0, 63,
+        0, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40,
+        41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51};
 
-const std::string b64encode(const void* data, const size_t &len)
+const std::string b64encode(const void *data, const size_t &len)
 {
     std::string result((len + 2) / 3 * 4, '=');
-    unsigned char *p = (unsigned  char*) data;
+    unsigned char *p = (unsigned char *)data;
     char *str = &result[0];
     size_t j = 0, pad = len % 3;
     const size_t last = len - pad;
@@ -41,7 +41,7 @@ const std::string b64encode(const void* data, const size_t &len)
         str[j++] = B64chars[n >> 6 & 0x3F];
         str[j++] = B64chars[n & 0x3F];
     }
-    if (pad)  /// Set padding
+    if (pad)
     {
         int n = --pad ? int(p[last]) << 8 | p[last + 1] : p[last];
         str[j++] = B64chars[pad ? n >> 10 & 0x3F : n >> 2];
@@ -51,17 +51,18 @@ const std::string b64encode(const void* data, const size_t &len)
     return result;
 }
 
-const std::string b64decode(const void* data, const size_t &len)
+const std::string b64decode(const void *data, const size_t &len)
 {
-    if (len == 0) return "";
+    if (len == 0)
+        return "";
 
-    unsigned char *p = (unsigned char*) data;
+    unsigned char *p = (unsigned char *)data;
     size_t j = 0,
-        pad1 = len % 4 || p[len - 1] == '=',
-        pad2 = pad1 && (len % 4 > 2 || p[len - 2] != '=');
+           pad1 = len % 4 || p[len - 1] == '=',
+           pad2 = pad1 && (len % 4 > 2 || p[len - 2] != '=');
     const size_t last = (len - pad1) / 4 << 2;
     std::string result(last / 4 * 3 + pad1 + pad2, '\0');
-    unsigned char *str = (unsigned char*) &result[0];
+    unsigned char *str = (unsigned char *)&result[0];
 
     for (size_t i = 0; i < last; i += 4)
     {
@@ -83,12 +84,12 @@ const std::string b64decode(const void* data, const size_t &len)
     return result;
 }
 
-std::string b64encode(const std::string& str)
+std::string b64encode(const std::string &str)
 {
     return b64encode(str.c_str(), str.size());
 }
 
-std::string b64decode(const std::string& str64)
+std::string b64decode(const std::string &str64)
 {
     return b64decode(str64.c_str(), str64.size());
 }
@@ -159,16 +160,18 @@ inline bool Dif1(double K, double i)
 class RSA
 {
 public:
+    unsigned int n, phi;
+    long double e, d;
     inline RSA()
     {
-        p = GenPrime(powl(2, MAXP), powl(2, MINP));
-        q = GenPrime(powl(2, MAXP), powl(2, MINP));
-        n = p * q;                                      //
-        e = GenPrime(powl(2, MINP), powl(2, MINP / 2)); //
+        int p = GenPrime(powl(2, MAXP), powl(2, MINP));
+        int q = GenPrime(powl(2, MAXP), powl(2, MINP));
+        n = p * q;
+        e = GenPrime(powl(2, MINP), powl(2, MINP / 2));
         phi = (p - 1) * (q - 1);
-        d = fmod(1 / e, phi); //
+        d = fmod(1 / e, phi);
     }
-    inline RSA(double ec, long long nc)
+    inline RSA(double ec, unsigned long long nc)
     {
         this->e = ec;
         this->n = nc;
@@ -209,8 +212,7 @@ public:
     }
     bool VerifySig(string filename)
     {
-        //if (exists(filename + ".sig") == 0)
-         //   return 0;
+
         ifstream PUK(filename + ".Sig");
 
         stringstream ss;
@@ -238,7 +240,7 @@ public:
         {
         }
 
-        return (isValide(Signature, SHA1::from_file(filename)) && exists(filename + ".Sig"));
+        return isValide(Signature, SHA1::from_file(filename));
     }
     void SaveSig(string filename)
     {
@@ -254,19 +256,15 @@ public:
     {
         if (Signature->size() != 0)
         {
-            for (int i = 0; i < k.size(); i++)
+            for (int i = 1; i < k.size(); i++)
+            {
                 if (!IS)
                     return 0;
-            return 1;
+                return 1;
+            }
         }
         else
             return 0;
+        return 0;
     }
-    long long p, q, phi, n;
-    double d, e;
-    
 };
-/**
- * Given a string, this function will encode it in 64b (with padding)
- */
-

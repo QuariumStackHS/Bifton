@@ -6,7 +6,8 @@
 #include <iomanip>
 #include <iostream>
 #include <sstream>
-#include <string>
+#include<string>
+#include <cstring>
 
 class SHA1
 {
@@ -23,7 +24,7 @@ private:
     uint64_t transforms;
 };
 
-#endif /* SHA1_HPP */
+/* SHA1_HPP */
 inline int MatchSHA1File(std::string StorageName, std::string Filename)
 {
     SHA1 Creaper = SHA1();
@@ -45,3 +46,4 @@ inline int MatchSHA1File(std::string StorageName, std::string Filename)
         return 0;
     }
 }
+#endif 

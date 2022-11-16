@@ -9,7 +9,8 @@
 #include <iostream>
 #include <map>
 #include <sstream>
-#include <string>
+#include<string>
+#include <cstring>
 #include <time.h>
 #include <unistd.h>
 #include <vector>

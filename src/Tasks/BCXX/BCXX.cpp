@@ -185,12 +185,14 @@ EndTask(Bifton_build, BXX);
 Task(BXXNOE,a){
 a->GetNextArg();
 }
-EndTask(BXXNOE,BXXNONE)
+
+
 __Register(BCXX, SE)
 {
     SE->Register("build", BXX::PtrAddress);
     SE->Register("clean", BCX::PtrAddress);
     SE->Register("help", BCXX_HELP::PtrAddress);
+    SE->Register("Verif", BXX::PtrAddress);
 }
 __Register(NONEXX, SE)
 {

@@ -1,39 +1,12 @@
 #include "Tasks/Registry.hpp"
 #define Main
 #include <iomanip>
-#include "Tasks/BCXX/BiftonCxx/Signataire.hpp"
+#include "Tasks/BCXX/BiftonCxx/Signataire.hpp" // test
 
 
 int main(int argc, char **argv)
 {
-    string SigFile = argv[0];
-    SigFile.append(".Sig");
-    RSA V;
 
-    if (exists(SigFile))
-    {
-        RSA S(argv[0]);
-        
-        if (!S.VerifySig(argv[0]) || !exists(string(argv[0]) + ".Sig"))
-        {
-            cout << "Signature Altered!\nSign it!" << endl;
-
-            V.SaveSig(argv[0]);
-            //cout << "Private D:" << double2longlong(V.d) << endl;
-        }
-        else
-            cout << "Signature UnAltered!" << endl;
-    }
-    else
-    {
-
-        cout << "Signing Executable..." << endl;
-        //cout << double2longlong(V.d) << endl;
-        V=RSA();
-        cout<<V.phi<<endl;
-        V.SaveSig(argv[0]);
-
-    }
 
 
     string CPPStandardVersion;
@@ -44,3 +17,7 @@ int main(int argc, char **argv)
     Session->Run();
     return 0;
 }
+
+/*
+
+*/

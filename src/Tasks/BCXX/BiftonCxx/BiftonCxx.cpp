@@ -309,5 +309,6 @@ Deterministix *Deterministix::Register(string Code, string linkageswitch)
 {
     this->I2SL[Code] = linkageswitch;
     this->I2SLB[Code] = 0;
+    
     return this;
 }

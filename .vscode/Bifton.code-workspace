@@ -111,7 +111,8 @@
 			"type_traits": "cpp",
 			"typeinfo": "cpp",
 			"unordered_map": "cpp",
-			"lprefix.h": "c"
+			"lprefix.h": "c",
+			"random": "cpp"
 		}
 	}
 }

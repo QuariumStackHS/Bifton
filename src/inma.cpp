@@ -1,19 +1,45 @@
-#include <math.h>
-#include <iostream>
-#include <array>
-#include <string.h>
-#include <time.h>
-#include <map>
-#include <memory.h>
-#include <filesystem>
-using namespace std;
-using namespace std::filesystem;
-#include <string>
-#include "Tasks/BCXX/BiftonCxx/Signataire.hpp"
-int main()
+#include "inma.hpp"
+
+int main(int argc, char **argv)
 {
-    time_t Exetime = std::time(0);
-    RSA Sign = RSA();
+    Pack Sa = Pack();
+    // PackThisfile("./inma");
+    for (int i = 0; i < argc; i++)
+    { // cout<<argv[i]<<endl;
+        if (strcmp(argv[i], "add") == 0)
+        {
+            Sa.Append(argv[i + 1], FileContent(argv[i + 1]));
+            // Sa.WritePack(argv[i+2]);
+        }
+        else if (strcmp(argv[i], "write") == 0)
+        {
+            Sa.WritePack(argv[i + 1]);
+        }
+        else if (strcmp(argv[i], "read") == 0)
+        {
+            Sa.openPack(argv[i + 1]);
+        }
+        else if (strcmp(argv[i], "extract") == 0)
+        {
+            Sa.Dump(argv[i + 1]);
+        }
+        else if (strcmp(argv[i], "remove") == 0)
+        {
+            Sa.remove(argv[i + 1]);
+        }
+        else if (strcmp(argv[i], "extractall") == 0)
+        {
+            Sa.Dump();
+        }
+        else if (strcmp(argv[i], "list") == 0)
+        {
+            Sa.list();
+        }
+        else if (strcmp(argv[i], "help") == 0)
+        {
+            cout << "read [packname]\nwrite [packname]\nextract [fileFromPack]\nextractall\nremove [fileFromPack]\nlist\nhelp" << endl;
+        }
+    }
 
     return 0;
 }
